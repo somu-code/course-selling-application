@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  // useEffect(() => {
+  //   fetch()
+  // })
   return (
     <header className="">
       <nav className="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto] items-center font-medium px-6 py-3">

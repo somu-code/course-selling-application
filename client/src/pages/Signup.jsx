@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { serverApi } from "../ServerApi";
 
 function Signup() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function Signup() {
     }
     setVisible(false);
     try {
-      await fetch("http://localhost:3000/admin/signup", {
+      await fetch(`${serverApi}/admin/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
