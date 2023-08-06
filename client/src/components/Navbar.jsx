@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <header className="">
-      <nav className="flex flex-row justify-between items-center font-medium px-6 py-3">
+      <nav className="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto] items-center font-medium px-6 py-3">
         <Link to="/">
           <div className="text-[#1E0E62] text-2xl font-bold">Coursera</div>
         </Link>
@@ -18,7 +18,7 @@ function Navbar() {
             <div className="">Add-Course</div>
           </Link>
         </div>
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center justify-end gap-2">
           <Link to="/admin/signup">
             <button className="text-[#151439] text-lg">Sign Up</button>
           </Link>
