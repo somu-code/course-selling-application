@@ -58,6 +58,13 @@ app.post("/admin/signin", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
+    // res.cookie("isLoggedIN", true, {
+    //   domain: "localhost",
+    //   path: "/",
+    //   maxAge: 60 * 60 * 1000,
+    //   secure: true,
+    //   sameSite: "strict",
+    // });
     return res.json({ message: "Logged in successful" });
   } catch (error) {
     res.status(500).json({ error });
