@@ -1,15 +1,9 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { serverApi } from "../ServerApi";
-import { adminState } from "../store/atoms/admin";
-import { useSetRecoilState, useRecoilValue } from "recoil";
-import { adminLoadingState } from "../store/selectors/isAdminLoading";
+import { useRecoilValue } from "recoil";
 import { adminEmailState } from "../store/selectors/adminEmail";
 
 function Navbar() {
-  const adminLoading = useRecoilValue(adminLoadingState);
   const adminEmail = useRecoilValue(adminEmailState);
-  console.log(adminEmail);
   return (
     <header className="">
       <nav className="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto] items-center font-medium px-6 py-3">
