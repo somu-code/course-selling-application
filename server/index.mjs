@@ -65,7 +65,7 @@ app.post("/admin/signin", async (req, res) => {
     //   secure: true,
     //   sameSite: "strict",
     // });
-    return res.json({ message: "Logged in successful" });
+    return res.json({ message: "Logged in successful", email });
   } catch (error) {
     res.status(500).json({ error });
   }

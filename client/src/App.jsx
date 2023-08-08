@@ -10,9 +10,12 @@ import { useSetRecoilState } from "recoil";
 import { adminState } from "./store/atoms/admin";
 import { serverApi } from "./ServerApi";
 import { useEffect } from "react";
+import Account from "./pages/Account";
+import { isAuthenticated } from "./store/atoms/authenticated";
 
 function App() {
   const setAdmin = useSetRecoilState(adminState);
+  const setAuth = useSetRecoilState(isAuthenticated);
   useEffect(() => {
     const initAdmin = async () => {
       try {
@@ -24,27 +27,26 @@ function App() {
           },
         });
         if (response.ok) {
+          setAuth(true);
           const jsonData = await response.json();
           setAdmin({
-            isLoading: false,
             adminEmail: jsonData.email,
           });
         } else {
           setAdmin({
-            isLoading: true,
             adminEmail: null,
           });
         }
       } catch (error) {
         console.error(error);
         setAdmin({
-          isLoading: true,
           adminEmail: null,
         });
       }
     };
     initAdmin();
   }, []);
+
   return (
     <>
       <Navbar />
@@ -54,6 +56,7 @@ function App() {
         <Route path="/admin/signin" element={<Signin />} />
         <Route path="/admin/add-course" element={<AddCourse />} />
         <Route path="/admin/courses" element={<Courses />} />
+        <Route path="admin/account" element={<Account />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

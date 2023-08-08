@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { adminEmailState } from "../store/selectors/adminEmail";
 import { isAuthenticated } from "../store/atoms/authenticated";
 
 function Navbar() {
-  const adminEmail = useRecoilValue(adminEmailState);
   const auth = useRecoilValue(isAuthenticated);
   return (
     <header className="">
@@ -25,7 +23,9 @@ function Navbar() {
         </div>
         <div className="flex flex-row items-center justify-end gap-2">
           {auth ? (
-            <h2 className="text-lg">accounts</h2>
+            <Link to="/admin/account">
+              <h2 className="text-lg">Accounts</h2>
+            </Link>
           ) : (
             <Link to="/admin/signup">
               <button className="text-[#151439] text-lg">Sign Up</button>

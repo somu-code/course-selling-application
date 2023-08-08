@@ -24,9 +24,11 @@ function Signin() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        const jsonData = await response.json();
+        console.log(jsonData.email);
         setAuth(true);
-        setAdmin(email);
-        // navigate("/");
+        setAdmin(jsonData.email);
+        navigate("/");
       }
     } catch (error) {
       console.error(error);
