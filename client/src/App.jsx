@@ -7,15 +7,13 @@ import PageNotFound from "./pages/PageNotFound";
 import AddCourse from "./pages/AddCourse";
 import Courses from "./pages/Courses";
 import { useSetRecoilState } from "recoil";
-import { adminState } from "./store/atoms/admin";
 import { serverApi } from "./ServerApi";
 import { useEffect } from "react";
 import Account from "./pages/Account";
-import { isAuthenticated } from "./store/atoms/authenticated";
+import { adminState } from "./store/atoms/admin";
 
 function App() {
   const setAdmin = useSetRecoilState(adminState);
-  const setAuth = useSetRecoilState(isAuthenticated);
   useEffect(() => {
     const initAdmin = async () => {
       try {
@@ -27,10 +25,11 @@ function App() {
           },
         });
         if (response.ok) {
-          setAuth(true);
           const jsonData = await response.json();
+          const responseEmail = jsonData.email;
           setAdmin({
-            adminEmail: jsonData.email,
+            adminEmail: responseEmail,
+            isAuthenticated: true,
           });
         } else {
           setAdmin({

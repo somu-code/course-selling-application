@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { isAuthenticated } from "../store/atoms/authenticated";
+import { adminAuthenticatedState } from "../store/selectors/isAdminAuthenticated";
 
 function Navbar() {
-  const auth = useRecoilValue(isAuthenticated);
+  const auth = useRecoilValue(adminAuthenticatedState);
   return (
     <header className="">
       <nav className="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto] items-center font-medium px-6 py-3">

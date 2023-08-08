@@ -3,7 +3,6 @@ import { adminEmailState } from "../store/selectors/adminEmail";
 
 function Account() {
   const adminEmail = useRecoilValue(adminEmailState);
-  console.log(adminEmail);
   return (
     <>
       <p className="text-center text-2xl font-medium mt-12">
