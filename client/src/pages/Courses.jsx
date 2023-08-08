@@ -29,14 +29,14 @@ function Courses() {
       <div className="flex flex-row gap-8 flex-wrap justify-center">
         {courses.map((course) => {
           return (
-            <div key={course._id} className="w-80">
+            <div key={course._id} className="w-80 h-80 flex flex-col">
               <img src={course.imageURL} alt="" />
-              <div className="bg-[#e6f1fc] px-2 pb-1">
+              <div className="bg-[#e6f1fc] px-2 pb-1 flex-grow flex flex-col">
                 <div className="text-lg font-medium">{course.title}</div>
-                <div className="text-justify line-clamp-4">
+                <div className="text-justify line-clamp-3">
                   {course.description}
                 </div>
-                <div className="text-end font-semibold">
+                <div className="text-end font-semibold mt-auto">
                   Cost ${course.price}
                 </div>
               </div>
