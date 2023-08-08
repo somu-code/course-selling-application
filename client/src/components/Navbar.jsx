@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { adminAuthenticatedState } from "../store/selectors/isAdminAuthenticated";
+import LogOut from "./LogOut";
 
 function Navbar() {
   const auth = useRecoilValue(adminAuthenticatedState);
@@ -21,24 +22,27 @@ function Navbar() {
             <div className="">Add-Course</div>
           </Link>
         </div>
-        <div className="flex flex-row items-center justify-end gap-2">
-          {auth ? (
+        {auth ? (
+          <div className="flex flex-row items-center justify-end gap-2">
             <Link to="/admin/account">
               <h2 className="text-lg">Accounts</h2>
             </Link>
-          ) : (
+            <LogOut />
+          </div>
+        ) : (
+          <div className="flex flex-row items-center justify-end gap-2">
             <Link to="/admin/signup">
               <button className="text-[#151439] text-lg">Sign Up</button>
             </Link>
-          )}
-          <Link to="/admin/signin">
-            <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
-              <button className="text-[#FFFFFF] text-lg font-semibold text-center">
-                Sign In
-              </button>
-            </div>
-          </Link>
-        </div>
+            <Link to="/admin/signin">
+              <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
+                <button className="text-[#FFFFFF] text-lg font-semibold text-center">
+                  Sign In
+                </button>
+              </div>
+            </Link>
+          </div>
+        )}
       </nav>
     </header>
   );

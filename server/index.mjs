@@ -58,13 +58,6 @@ app.post("/admin/signin", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
-    // res.cookie("isLoggedIN", true, {
-    //   domain: "localhost",
-    //   path: "/",
-    //   maxAge: 60 * 60 * 1000,
-    //   secure: true,
-    //   sameSite: "strict",
-    // });
     return res.json({ message: "Logged in successful", email });
   } catch (error) {
     res.status(500).json({ error });
@@ -95,7 +88,23 @@ app.get("/admin/profile", authenticateAdminJWT, async (req, res) => {
     const admin = req.admin;
     res.json({ email: admin.email });
   } catch (error) {
-    res.status.json({ message });
+    res.sendStatus(500);
+  }
+});
+
+app.get("/admin/logout", authenticateAdminJWT, async (req, res) => {
+  try {
+    res.cookie("accessToken", "", {
+      domain: "localhost",
+      path: "/",
+      secure: true,
+      sameSite: "strict",
+      httpOnly: true,
+      maxAge: 0,
+    });
+    res.json({ message: "Logout successfully" });
+  } catch (error) {
+    res.sendStatus(500);
   }
 });
 
