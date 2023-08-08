@@ -8,6 +8,7 @@ function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [visible, setVisible] = useState(false);
   const setAdmin = useSetRecoilState(adminState);
 
   const handleSubmit = async (event) => {
@@ -29,6 +30,9 @@ function Signin() {
           isAuthenticated: true,
         });
         navigate("/");
+      }
+      if (response.status === 401 || response.status === 404) {
+        setVisible(true);
       }
     } catch (error) {
       console.error(error);
@@ -67,9 +71,11 @@ function Signin() {
             onChange={(event) => setPassword(event.target.value)}
             value={password}
           />
-          <p className="text-center text-red-500 font-medium">
-            Invalid email or password
-          </p>
+          {visible ? (
+            <p className="text-center text-red-500 font-medium">
+              Invalid email or password
+            </p>
+          ) : null}
           <button
             type="submit"
             className="bg-[#2866df] text-white font-semibold py-2 rounded-md hover:bg-[#215ac8]"
