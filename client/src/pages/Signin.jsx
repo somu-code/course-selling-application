@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { serverApi } from "../ServerApi";
 import { useSetRecoilState } from "recoil";
 import { adminState } from "../store/atoms/admin";
+import { isAuthenticated } from "../store/atoms/authenticated";
 
 function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setAdmin = useSetRecoilState(adminState);
+  const setAuth = useSetRecoilState(isAuthenticated);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,6 +24,7 @@ function Signin() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        setAuth(true);
         setAdmin(email);
         // navigate("/");
       }
@@ -31,6 +34,7 @@ function Signin() {
     setEmail("");
     setPassword("");
   };
+
   return (
     <div className="min-h-[90vh] flex flex-row justify-center items-center">
       <div className="w-[430px] bg-slate-300 rounded-xl">
