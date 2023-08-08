@@ -20,7 +20,6 @@ function LogOut() {
       });
       if (response.ok) {
         const jsonData = await response.json();
-        console.log(jsonData);
         setAdmin({
           adminEmail: null,
           isAuthenticated: false,
