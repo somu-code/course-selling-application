@@ -1,15 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { courseState } from "../store/atoms/courses";
+import { serverApi } from "../ServerApi";
 
 function CourseDetails() {
-  const courses = useRecoilValue(courseState);
+  const [course, setCourse] = useState({});
   const { id } = useParams();
-  console.log(courses)
-  const course = courses.find((element) => element._id === id);
-  console.log(course);
-  return <div>CourseDetails</div>;
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const response = await fetch(
+          `${serverApi}/admin/course?courseId=${id}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          const jsonData = await response.json();
+          setCourse(jsonData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCourse();
+  }, []);
+  return (
+    <div className="max-w-screen-2xl mx-auto min-h-[90vh] flex justify-center items-center">
+      <div className="flex flex-row">
+        <div className="w-1/2 p-6 bg-[#e6f1fc] flex flex-col justify-evenly gap-8">
+          <h2 className="text-2xl font-semibold text-center">{course.title}</h2>
+          <p className="text-justify">{course.description}</p>
+          <p className="font-semibold text-end">Cost {course.price}</p>
+          <div className="flex flex-row justify-between">
+            <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
+              <button className="text-[#FFFFFF] text-lg font-semibold text-center">
+                Edit
+              </button>
+            </div>
+            <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
+              <button className="text-[#FFFFFF] text-lg font-semibold text-center">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <img src={course.imageURL} alt="course image" className="w-1/2" />
+      </div>
+    </div>
+  );
 }
 
 export default CourseDetails;

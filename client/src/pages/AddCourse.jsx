@@ -51,7 +51,8 @@ function AddCourse() {
           onChange={(event) => setTitle(event.target.value)}
           value={title}
         />
-        <input
+        <textarea
+          rows="2"
           type="text"
           name="description"
           id="courseDescription"
@@ -60,7 +61,7 @@ function AddCourse() {
           className="pl-2 py-2 rounded-md focus:outline-blue-500"
           onChange={(event) => setDescription(event.target.value)}
           value={description}
-        />
+        ></textarea>
         <input
           type="number"
           name="price"

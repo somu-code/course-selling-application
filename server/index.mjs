@@ -92,6 +92,16 @@ app.get("/admin/courses", authenticateAdminJWT, async (req, res) => {
   }
 });
 
+app.get("/admin/course", authenticateAdminJWT, async (req, res) => {
+  try {
+    const courseId = req.query.courseId;
+    const course = await Course.findOne({ _id: courseId });
+    res.json(course);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
 app.get("/admin/profile", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = req.admin;
