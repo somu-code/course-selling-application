@@ -35,7 +35,7 @@ function CourseDetails() {
         <div className="w-1/2 p-6 bg-[#e6f1fc] flex flex-col justify-evenly gap-8">
           <h2 className="text-2xl font-semibold text-center">{course.title}</h2>
           <p className="text-justify">{course.description}</p>
-          <p className="font-semibold text-end">Cost {course.price}</p>
+          <p className="font-semibold text-end">Cost ${course.price}</p>
           <div className="flex flex-row justify-between">
             <Link to={`/admin/update-course/${course._id}`}>
               <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
