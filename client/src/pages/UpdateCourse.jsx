@@ -8,31 +8,6 @@ function UpdateCourse() {
   const courses = useRecoilValue(courseState);
   const navigate = useNavigate();
   const { id } = useParams();
-  //   const [course, setCourse] = useState({});
-  //   useEffect(() => {
-  //     const fetchCourse = async () => {
-  //       try {
-  //         const response = await fetch(
-  //           `${serverApi}/admin/course?courseId=${id}`,
-  //           {
-  //             method: "GET",
-  //             credentials: "include",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //           }
-  //         );
-  //         if (response.ok) {
-  //           const jsonData = await response.json();
-  //           setCourse(jsonData);
-  //         }
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     };
-  //     fetchCourse();
-  //   }, []);
-  //   console.log(course.title);
   const course = courses.find((element) => {
     if (element._id == id) {
       return element;
@@ -49,7 +24,7 @@ function UpdateCourse() {
       const response = await fetch(
         `${serverApi}/admin/update-course?courseId=${id}`,
         {
-          method: "POST",
+          method: "PUT",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +40,7 @@ function UpdateCourse() {
         }
       );
       if (response.ok) {
-        const jsonData = response.json();
+        const jsonData = await response.json();
         navigate(`/admin/course/${id}`);
       }
     } catch (error) {

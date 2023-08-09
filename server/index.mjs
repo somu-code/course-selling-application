@@ -102,7 +102,7 @@ app.get("/admin/course", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-app.post("/admin/update-course", authenticateAdminJWT, async (req, res) => {
+app.put("/admin/update-course", authenticateAdminJWT, async (req, res) => {
   try {
     const courseId = req.query.courseId;
     const updatedCourse = req.body;

@@ -1,8 +1,11 @@
-
 function PageNotFound() {
   return (
-    <div>Page you are trying to access does not exists.</div>
-  )
+    <div className="min-h-[90vh] flex flex-col justify-center">
+      <p className="text-center text-xl font-medium">
+        Page you are trying to access does not exists.
+      </p>
+    </div>
+  );
 }
 
-export default PageNotFound
+export default PageNotFound;
