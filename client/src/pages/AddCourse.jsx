@@ -35,7 +35,7 @@ function AddCourse() {
     }
   };
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center">
+    <div className="min-h-[90vh] flex flex-col justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col bg-slate-300 p-6 gap-4 rounded-xl w-2/5"

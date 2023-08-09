@@ -3,10 +3,12 @@ import { serverApi } from "../ServerApi";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { adminState } from "../store/atoms/admin";
+import { courseState } from "../store/atoms/courses";
 
 function LogOut() {
   const navigate = useNavigate();
   const setAdmin = useSetRecoilState(adminState);
+  const setCourse = useSetRecoilState(courseState);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,6 +26,7 @@ function LogOut() {
           adminEmail: null,
           isAuthenticated: false,
         });
+        setCourse([]);
         navigate("/");
       }
     } catch (error) {

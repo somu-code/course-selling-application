@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 app.post("/admin/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = await req.body;
     const admin = await Admin.findOne({ email });
     if (admin) {
       return res.status(403).json({ message: "Admin email already exists" });
@@ -40,7 +40,7 @@ app.post("/admin/signup", async (req, res) => {
 
 app.post("/admin/signin", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = await req.body;
     const admin = await Admin.findOne({ email });
     if (!admin) {
       return res.status(404).json({ error: "Email not found" });
@@ -66,7 +66,12 @@ app.post("/admin/signin", async (req, res) => {
 
 app.post("/admin/add-course", authenticateAdminJWT, async (req, res) => {
   try {
-    const course = new Course(req.body);
+    const admin = await req.admin;
+    const email = admin.email;
+    const owner = await Admin.findOne({ email });
+    const ownerId = owner._id;
+    const newCourse = { ...req.body, owner: ownerId };
+    const course = new Course(newCourse);
     await course.save();
     res.json({ message: "Course created successfully", courseID: course.id });
   } catch (error) {
@@ -76,7 +81,11 @@ app.post("/admin/add-course", authenticateAdminJWT, async (req, res) => {
 
 app.get("/admin/courses", authenticateAdminJWT, async (req, res) => {
   try {
-    const courses = await Course.find({});
+    const admin = await req.admin;
+    const email = admin.email;
+    const owner = await Admin.findOne({ email });
+    const ownerId = owner._id;
+    const courses = await Course.find({ owner: ownerId });
     res.json(courses);
   } catch (error) {
     res.sendStatus(500);
