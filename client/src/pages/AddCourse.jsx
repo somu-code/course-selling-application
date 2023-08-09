@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { serverApi } from "../ServerApi";
+import { useNavigate } from "react-router-dom";
 
 function AddCourse() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -31,6 +33,7 @@ function AddCourse() {
         setPrice("");
         setPublished(true);
         setImageURL("");
+        navigate("/admin/courses");
       } else {
         console.log("Unable to create course.");
       }

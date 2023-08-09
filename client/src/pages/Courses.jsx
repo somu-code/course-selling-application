@@ -36,11 +36,13 @@ function Courses() {
         {courses.map((course) => {
           return (
             <Link key={course._id} to={`/admin/course/${course._id}`}>
-              <div className="w-80 h-80 flex flex-col">
-                <img src={course.imageURL} alt="" />
+              <div className="w-80 h-96 flex flex-col overflow-hidden">
+                <img src={course.imageURL} alt="" className="" />
                 <div className="bg-[#e6f1fc] px-2 pb-1 flex-grow flex flex-col">
-                  <div className="text-lg font-medium">{course.title}</div>
-                  <div className="text-justify line-clamp-3">
+                  <div className="text-lg font-medium line-clamp-1">
+                    {course.title}
+                  </div>
+                  <div className="text-justify line-clamp-4">
                     {course.description}
                   </div>
                   <div className="text-end font-semibold mt-auto">
