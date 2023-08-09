@@ -1,38 +1,72 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { courseState } from "../store/atoms/courses";
 import { serverApi } from "../ServerApi";
 
-function AddCourse() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [published, setPublished] = useState(true);
-  const [imageURL, setImageURL] = useState("");
-
+function UpdateCourse() {
+  const courses = useRecoilValue(courseState);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  //   const [course, setCourse] = useState({});
+  //   useEffect(() => {
+  //     const fetchCourse = async () => {
+  //       try {
+  //         const response = await fetch(
+  //           `${serverApi}/admin/course?courseId=${id}`,
+  //           {
+  //             method: "GET",
+  //             credentials: "include",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //           }
+  //         );
+  //         if (response.ok) {
+  //           const jsonData = await response.json();
+  //           setCourse(jsonData);
+  //         }
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     };
+  //     fetchCourse();
+  //   }, []);
+  //   console.log(course.title);
+  const course = courses.find((element) => {
+    if (element._id == id) {
+      return element;
+    }
+  });
+  const [title, setTitle] = useState(course.title);
+  const [description, setDescription] = useState(course.description);
+  const [price, setPrice] = useState(course.price);
+  const [published, setPublished] = useState(course.published);
+  const [imageURL, setImageURL] = useState(course.imageURL);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${serverApi}/admin/add-course`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          price,
-          published,
-          imageURL,
-        }),
-      });
+      const response = await fetch(
+        `${serverApi}/admin/update-course?courseId=${id}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id: course._id,
+            title,
+            description,
+            price,
+            published,
+            imageURL,
+          }),
+        }
+      );
       if (response.ok) {
-        setTitle("");
-        setDescription("");
-        setPrice("");
-        setPublished(true);
-        setImageURL("");
-      } else {
-        console.log("Unable to create course.");
+        const jsonData = response.json();
+        navigate(`/admin/course/${id}`);
       }
     } catch (error) {
       console.error(error);
@@ -44,7 +78,9 @@ function AddCourse() {
         onSubmit={handleSubmit}
         className="flex flex-col bg-slate-300 p-6 gap-4 rounded-xl w-2/5"
       >
-        <h3 className="text-center font-semibold text-[#2866df]">Add Course</h3>
+        <h3 className="text-center font-semibold text-[#2866df]">
+          Update Course
+        </h3>
         <input
           type="text"
           name="title"
@@ -52,8 +88,8 @@ function AddCourse() {
           placeholder="Title"
           required
           className="pl-2 py-2 rounded-md focus:outline-blue-500"
-          onChange={(event) => setTitle(event.target.value)}
           value={title}
+          onChange={(event) => setTitle(event.target.value)}
         />
         <textarea
           rows="2"
@@ -103,11 +139,11 @@ function AddCourse() {
           type="submit"
           className="bg-[#2866df] text-white font-semibold py-2 rounded-md hover:bg-[#215ac8]"
         >
-          Add Course
+          Update Course
         </button>
       </form>
     </div>
   );
 }
 
-export default AddCourse;
+export default UpdateCourse;

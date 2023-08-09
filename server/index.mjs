@@ -102,6 +102,27 @@ app.get("/admin/course", authenticateAdminJWT, async (req, res) => {
   }
 });
 
+app.post("/admin/update-course", authenticateAdminJWT, async (req, res) => {
+  try {
+    const courseId = req.query.courseId;
+    const updatedCourse = req.body;
+    if (courseId === updatedCourse._id) {
+      const isUpdated = await Course.findByIdAndUpdate(
+        courseId,
+        updatedCourse,
+        { new: true }
+      );
+      if (isUpdated) {
+        return res.json({ message: "Course Updated successfully" });
+      } else {
+        return res.json({ message: "Failed to update course" });
+      }
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
 app.get("/admin/profile", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = req.admin;

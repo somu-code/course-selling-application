@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { serverApi } from "../ServerApi";
+import { Link } from "react-router-dom";
 
 function CourseDetails() {
   const [course, setCourse] = useState({});
@@ -36,11 +37,13 @@ function CourseDetails() {
           <p className="text-justify">{course.description}</p>
           <p className="font-semibold text-end">Cost {course.price}</p>
           <div className="flex flex-row justify-between">
-            <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
-              <button className="text-[#FFFFFF] text-lg font-semibold text-center">
-                Edit
-              </button>
-            </div>
+            <Link to={`/admin/update-course/${course._id}`}>
+              <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
+                <button className="text-[#FFFFFF] text-lg font-semibold text-center">
+                  Edit
+                </button>
+              </div>
+            </Link>
             <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
               <button className="text-[#FFFFFF] text-lg font-semibold text-center">
                 Delete
