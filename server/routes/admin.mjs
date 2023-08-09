@@ -11,15 +11,7 @@ import {
 
 export const adminRouter = express.Router();
 
-adminRouter.get("/", async (req, res) => {
-  try {
-    res.json({ message: "hello admin" });
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
-
-adminRouter.post("/admin/signup", async (req, res) => {
+adminRouter.post("/signup", async (req, res) => {
   try {
     const { email, password } = await req.body;
     const admin = await Admin.findOne({ email });
@@ -38,7 +30,7 @@ adminRouter.post("/admin/signup", async (req, res) => {
   }
 });
 
-adminRouter.post("/admin/signin", async (req, res) => {
+adminRouter.post("/signin", async (req, res) => {
   try {
     const { email, password } = await req.body;
     const admin = await Admin.findOne({ email });
@@ -64,26 +56,22 @@ adminRouter.post("/admin/signin", async (req, res) => {
   }
 });
 
-adminRouter.post(
-  "/admin/add-course",
-  authenticateAdminJWT,
-  async (req, res) => {
-    try {
-      const admin = await req.admin;
-      const email = admin.email;
-      const owner = await Admin.findOne({ email });
-      const ownerId = owner._id;
-      const newCourse = { ...req.body, owner: ownerId };
-      const course = new Course(newCourse);
-      await course.save();
-      res.json({ message: "Course created successfully", courseID: course.id });
-    } catch (error) {
-      res.sendStatus(500);
-    }
+adminRouter.post("/add-course", authenticateAdminJWT, async (req, res) => {
+  try {
+    const admin = await req.admin;
+    const email = admin.email;
+    const owner = await Admin.findOne({ email });
+    const ownerId = owner._id;
+    const newCourse = { ...req.body, owner: ownerId };
+    const course = new Course(newCourse);
+    await course.save();
+    res.json({ message: "Course created successfully", courseID: course.id });
+  } catch (error) {
+    res.sendStatus(500);
   }
-);
+});
 
-adminRouter.get("/admin/courses", authenticateAdminJWT, async (req, res) => {
+adminRouter.get("/courses", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
     const email = admin.email;
@@ -96,7 +84,7 @@ adminRouter.get("/admin/courses", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/admin/course", authenticateAdminJWT, async (req, res) => {
+adminRouter.get("/course", authenticateAdminJWT, async (req, res) => {
   try {
     const courseId = req.query.courseId;
     const course = await Course.findOne({ _id: courseId });
@@ -106,32 +94,28 @@ adminRouter.get("/admin/course", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.put(
-  "/admin/update-course",
-  authenticateAdminJWT,
-  async (req, res) => {
-    try {
-      const courseId = req.query.courseId;
-      const updatedCourse = req.body;
-      if (courseId === updatedCourse._id) {
-        const isUpdated = await Course.findByIdAndUpdate(
-          courseId,
-          updatedCourse,
-          { new: true }
-        );
-        if (isUpdated) {
-          return res.json({ message: "Course Updated successfully" });
-        } else {
-          return res.json({ message: "Failed to update course" });
-        }
+adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
+  try {
+    const courseId = req.query.courseId;
+    const updatedCourse = req.body;
+    if (courseId === updatedCourse._id) {
+      const isUpdated = await Course.findByIdAndUpdate(
+        courseId,
+        updatedCourse,
+        { new: true }
+      );
+      if (isUpdated) {
+        return res.json({ message: "Course Updated successfully" });
+      } else {
+        return res.json({ message: "Failed to update course" });
       }
-    } catch (error) {
-      res.sendStatus(500);
     }
+  } catch (error) {
+    res.sendStatus(500);
   }
-);
+});
 
-adminRouter.get("/admin/profile", authenticateAdminJWT, async (req, res) => {
+adminRouter.get("/profile", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = req.admin;
     res.json({ email: admin.email });
@@ -140,7 +124,7 @@ adminRouter.get("/admin/profile", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/admin/logout", authenticateAdminJWT, async (req, res) => {
+adminRouter.get("/logout", authenticateAdminJWT, async (req, res) => {
   try {
     res.cookie("accessToken", "", {
       domain: "localhost",
