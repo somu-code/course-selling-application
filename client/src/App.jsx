@@ -66,41 +66,4 @@ function App() {
   );
 }
 
-// function InitAdmin() {
-//   const setAdmin = useSetRecoilState(adminState);
-//   useEffect(() => {
-//     const init = async () => {
-//       try {
-//         const response = await fetch(`${serverApi}/admin/profile`, {
-//           method: "GET",
-//           credentials: "include",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         });
-//         if (response.ok) {
-//           const jsonData = await response.json();
-//           setAdmin({
-//             isLoading: false,
-//             adminEmail: jsonData.email,
-//           });
-//         } else {
-//           setAdmin({
-//             isLoading: true,
-//             adminEmail: null,
-//           });
-//         }
-//       } catch (error) {
-//         console.error(error);
-//         setAdmin({
-//           isLoading: true,
-//           adminEmail: null,
-//         });
-//       }
-//     };
-//     init();
-//   }, []);
-//   return <></>;
-// }
-
 export default App;
