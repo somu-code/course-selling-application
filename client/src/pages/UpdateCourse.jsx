@@ -42,6 +42,7 @@ function UpdateCourse() {
       if (response.ok) {
         const jsonData = await response.json();
         navigate(`/admin/course/${id}`);
+        alert("Course updated successfully");
       }
     } catch (error) {
       console.error(error);

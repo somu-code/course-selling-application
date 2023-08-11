@@ -32,6 +32,10 @@ function CourseDetails() {
   }, []);
 
   const deleteCourse = async () => {
+    const value = confirm("Course will be deleted permanently.");
+    if (!value) {
+      return;
+    }
     try {
       const response = await fetch(
         `${serverApi}/admin/delete-course?courseId=${id}`,
