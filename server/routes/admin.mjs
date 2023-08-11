@@ -163,3 +163,39 @@ adminRouter.get("/logout", authenticateAdminJWT, async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+adminRouter.delete(
+  "/delete-account",
+  authenticateAdminJWT,
+  async (req, res) => {
+    try {
+      const admin = req.admin;
+      const email = admin.email;
+      const adminData = await Admin.findOne({ email });
+      const adminId = adminData._id.toString();
+      await Course.deleteMany({ owner: adminId });
+      await Admin.findByIdAndDelete(adminId);
+      res.cookie("accessToken", "", {
+        domain: "localhost",
+        path: "/",
+        secure: true,
+        sameSite: "strict",
+        httpOnly: true,
+        maxAge: 0,
+      });
+      res.cookie("loggedIn", "", {
+        domain: "localhost",
+        path: "/",
+        secure: true,
+        sameSite: "strict",
+        maxAge: 0,
+      });
+      res.json({
+        message:
+          "Successfully deleted admin account along all the course he/she created.",
+      });
+    } catch (error) {
+      res.sendStatus(500);
+    }
+  }
+);
