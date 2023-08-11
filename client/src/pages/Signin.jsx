@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { serverApi } from "../ServerApi";
 import { useSetRecoilState } from "recoil";
 import { adminState } from "../store/atoms/admin";
+import { Link } from "react-router-dom";
 
 function Signin() {
   const navigate = useNavigate();
@@ -83,6 +84,11 @@ function Signin() {
             Sign In
           </button>
         </form>
+        <div className="flex flex-row justify-center pb-5">
+          <Link to="/admin/signup">
+            <p className="font-medium">Don't have an account?</p>
+          </Link>
+        </div>
       </div>
     </div>
   );
