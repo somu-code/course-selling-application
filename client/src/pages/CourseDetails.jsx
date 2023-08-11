@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { serverApi } from "../ServerApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function CourseDetails() {
   const [course, setCourse] = useState({});
   const { id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -29,6 +30,28 @@ function CourseDetails() {
     };
     fetchCourse();
   }, []);
+
+  const deleteCourse = async () => {
+    try {
+      const response = await fetch(
+        `${serverApi}/admin/delete-course?courseId=${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const jsonData = await response.json();
+        console.log(jsonData);
+        navigate("/admin/courses");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="max-w-screen-2xl mx-auto min-h-[90vh] flex justify-center items-center">
       <div className="flex flex-row">
@@ -45,7 +68,10 @@ function CourseDetails() {
               </div>
             </Link>
             <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
-              <button className="text-[#FFFFFF] text-lg font-semibold text-center">
+              <button
+                className="text-[#FFFFFF] text-lg font-semibold text-center"
+                onClick={deleteCourse}
+              >
                 Delete
               </button>
             </div>

@@ -105,11 +105,21 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
         { new: true }
       );
       if (isUpdated) {
-        return res.json({ message: "Course Updated successfully" });
+        return res.json({ message: "Course updated successfully" });
       } else {
         return res.json({ message: "Failed to update course" });
       }
     }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
+  try {
+    const courseId = req.query.courseId;
+    await Course.findByIdAndDelete(courseId);
+    res.json({ message: "Course deleted successfully" });
   } catch (error) {
     res.sendStatus(500);
   }
