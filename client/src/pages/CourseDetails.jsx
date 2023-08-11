@@ -45,7 +45,6 @@ function CourseDetails() {
       );
       if (response.ok) {
         const jsonData = await response.json();
-        console.log(jsonData);
         navigate("/admin/courses");
       }
     } catch (error) {

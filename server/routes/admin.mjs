@@ -50,6 +50,13 @@ adminRouter.post("/signin", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
+    res.cookie("loggedIn", true, {
+      domain: "localhost",
+      path: "/",
+      maxAge: 60 * 60 * 1000,
+      secure: true,
+      sameSite: "strict",
+    });
     return res.json({ message: "Logged in successful", email });
   } catch (error) {
     res.status(500).json({ error });
@@ -142,6 +149,13 @@ adminRouter.get("/logout", authenticateAdminJWT, async (req, res) => {
       secure: true,
       sameSite: "strict",
       httpOnly: true,
+      maxAge: 0,
+    });
+    res.cookie("loggedIn", "", {
+      domain: "localhost",
+      path: "/",
+      secure: true,
+      sameSite: "strict",
       maxAge: 0,
     });
     res.json({ message: "Logout successfully" });
