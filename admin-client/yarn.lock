@@ -544,6 +544,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"admin-client@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "admin-client@workspace:."
+  dependencies:
+    "@types/react": ^18.2.15
+    "@types/react-dom": ^18.2.7
+    "@vitejs/plugin-react-swc": ^3.3.2
+    autoprefixer: ^10.4.14
+    eslint: ^8.45.0
+    eslint-plugin-react: ^7.32.2
+    eslint-plugin-react-hooks: ^4.6.0
+    eslint-plugin-react-refresh: ^0.4.3
+    postcss: ^8.4.27
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-router-dom: ^6.14.2
+    recoil: ^0.7.7
+    tailwindcss: ^3.3.3
+    vite: ^4.4.5
+  languageName: unknown
+  linkType: soft
+
 "agent-base@npm:6, agent-base@npm:^6.0.2":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -912,28 +934,6 @@ __metadata:
   checksum: 2ac8cd2b2f5ec986a3c743935ec85b07bc174d5421a5efc8017e1f146a1cf5f781ae962618f416352103b32c9cd7e203276e8c28241bbe946160cab16149fb68
   languageName: node
   linkType: hard
-
-"client@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "client@workspace:."
-  dependencies:
-    "@types/react": ^18.2.15
-    "@types/react-dom": ^18.2.7
-    "@vitejs/plugin-react-swc": ^3.3.2
-    autoprefixer: ^10.4.14
-    eslint: ^8.45.0
-    eslint-plugin-react: ^7.32.2
-    eslint-plugin-react-hooks: ^4.6.0
-    eslint-plugin-react-refresh: ^0.4.3
-    postcss: ^8.4.27
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-router-dom: ^6.14.2
-    recoil: ^0.7.7
-    tailwindcss: ^3.3.3
-    vite: ^4.4.5
-  languageName: unknown
-  linkType: soft
 
 "color-convert@npm:^2.0.1":
   version: 2.0.1
