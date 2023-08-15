@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import bcrypt from "bcrypt";
@@ -9,7 +9,7 @@ import {
   authenticateAdminJWT,
 } from "../jwt-auth/admin-auth.mjs";
 
-export const adminRouter = express.Router();
+export const adminRouter = Router();
 
 adminRouter.post("/signup", async (req, res) => {
   try {
