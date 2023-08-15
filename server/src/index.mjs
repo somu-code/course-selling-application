@@ -20,5 +20,7 @@ app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 
 app.listen(process.env.PORT, () => {
-  console.log(`Express server listening on http://localhost:${PORT}`);
+  console.log(
+    `Express server listening on http://localhost:${process.env.PORT}`
+  );
 });
