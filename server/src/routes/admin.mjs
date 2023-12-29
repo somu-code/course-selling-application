@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import bcrypt from "bcrypt";
@@ -26,6 +26,7 @@ adminRouter.post("/signup", async (req, res) => {
       });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error });
   }
 });
@@ -109,7 +110,7 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
       const isUpdated = await Course.findByIdAndUpdate(
         courseId,
         updatedCourse,
-        { new: true }
+        { new: true },
       );
       if (isUpdated) {
         return res.json({ message: "Course updated successfully" });
@@ -197,5 +198,5 @@ adminRouter.delete(
     } catch (error) {
       res.sendStatus(500);
     }
-  }
+  },
 );
