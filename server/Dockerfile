@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
@@ -8,12 +8,10 @@ COPY package*.json ./
 
 RUN npm ci --only=production
 
-RUN npm install
-
 USER node
 
 COPY --chown=node:node ./src .
 
 EXPOSE 3000
 
-CMD [ "node" "index.mjs"]
+CMD ["node", "index.mjs"]

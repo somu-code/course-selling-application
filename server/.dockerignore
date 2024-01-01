@@ -1,2 +1,4 @@
-Dockerfile*
 node_modlues
+.gitignore
+Dockerfile*
+env_example
