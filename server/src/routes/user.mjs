@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { User } from "../models/user-model.mjs";
 import bcrypt from "bcrypt";
+import { generateUserJWT } from "../jwt-auth/user-auth.mjs";
 
 export const userRouter = Router();
 
@@ -22,6 +23,34 @@ userRouter.post("/signup", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+userRouter.post("/signin", async (req, res) => {
+  try {
+    const { email, password } = await req.body;
+    const userData = await User.findOne({ email });
+    if (!userData) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+    const isPasswordMatch = bcrypt.compare(password, userData.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+    const userPayload = { id: userData.id, email: userData.email }
+    const userToken = generateUserJWT(userPayload);
+    res.cookie("userAccessToken", userToken, {
+      domain: "localhost",
+      path: "/",
+      maxAge: 60 * 60 * 1000,
+      secure: true,
+      sameSite: "strict"
+    })
+    return res.json({ message: "Sign in successful" });
+  } catch (error) {
+    console.error(error)
+    res.sendStatus(500)
+
+  }
+})
 
 userRouter.get("/", async (req, res) => {
   try {
