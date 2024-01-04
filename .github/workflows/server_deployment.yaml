@@ -13,15 +13,18 @@ jobs:
   deploy:
     runs-on: ubuntu:latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: SSH and Deploy server
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          echo "$SSH_PRIVATE_KEY" > keyfile
-          chmod 600 keyfile
-          mkdir -p ~/.ssh
-          cp known_hosts ~/.ssh/
-          ssh -i keyfile ubuntu@3.81.221.94 "sudo bash -x ~/deploy-server.sh"
+      - name: Hello
+        run: echo "Hello, world!"
         shell: bash
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
+      # - name: SSH and Deploy server
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #   run: |
+      #     echo "$SSH_PRIVATE_KEY" > keyfile
+      #     chmod 600 keyfile
+      #     mkdir -p ~/.ssh
+      #     cp known_hosts ~/.ssh/
+      #     ssh -i keyfile ubuntu@3.81.221.94 "sudo bash -x ~/deploy-server.sh"
+      #   shell: bash
