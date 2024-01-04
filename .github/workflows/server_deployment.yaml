@@ -22,6 +22,6 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > keyfile
           chmod 600 keyfile
           mkdir -p ~/.ssh
-          cp known_hosts ~/.ssh/known_hosts
-          ssh -t -i keyfile ubuntu@13.233.153.1 "sudo bash -x ~/deploy-server.sh"
+          cp known_hosts ~/.ssh/
+          ssh -i keyfile ubuntu@3.81.221.94 "sudo bash -x ~/deploy-server.sh"
         shell: bash
