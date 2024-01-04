@@ -16,12 +16,12 @@ userRouter.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new User({ email, password: hashedPassword });
     await newUser.save();
-    return res.json({ message: "User created successfully" })
+    return res.json({ message: "User created successfully" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
-})
+});
 
 userRouter.get("/", async (req, res) => {
   try {
