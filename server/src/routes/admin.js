@@ -6,6 +6,7 @@ import {
   generateAdminJWT,
   authenticateAdminJWT,
 } from "../jwt-auth/admin-auth.js";
+import mongoose from "mongoose";
 
 export const adminRouter = Router();
 
@@ -21,7 +22,7 @@ adminRouter.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newAdmin = new Admin({ email, password: hashedPassword });
     await newAdmin.save();
-    return res.json({
+    return res.status(201).json({
       message: "Admin created successfully",
     });
   } catch (error) {
@@ -50,7 +51,7 @@ adminRouter.post("/signin", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
-    return res.json({ message: "Signin in successful" });
+    return res.status(201).json({ message: "Signin in successful" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -104,7 +105,7 @@ adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
     const newCourse = { ...reqBody, owner: admin.id };
     const course = new Course(newCourse);
     await course.save();
-    res.json({ message: "Course created successfully" });
+    res.status(201).json({ message: "Course created successfully" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -122,21 +123,27 @@ adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-// adminRouter.get("/course", authenticateAdminJWT, async (req, res) => {
-//   try {
-//     const courseId = req.query.courseId;
-//     const course = await Course.findOne({ _id: courseId });
-//     res.json(course);
-//   } catch (error) {
-//     res.sendStatus(500);
-//   }
-// });
+adminRouter.get("/all-courses", authenticateAdminJWT, async (_req, res) => {
+  try {
+    const courses = await Course.find();
+    res.json(courses);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
 
 adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
     const updatedCourse = await req.body;
+    const isValid = mongoose.Types.ObjectId.isValid(updatedCourse._id);
+    console.log(isValid, "isValid");
+    if (!isValid) {
+      return res.status(400).json({ message: "Course _id is not valid" })
+    }
     const courseData = await Course.findOne(updatedCourse.id);
+    console.log(courseData, "courseData");
     if (!courseData) {
       return res.status(404).json({ message: "Requested course does not exixts" })
     }
@@ -148,7 +155,7 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
       updatedCourse,
       { new: true },
     );
-    return res.json({ message: "Course updated successfully" });
+    return res.status(201).json({ message: "Course updated successfully" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -161,10 +168,7 @@ adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
     await Course.findByIdAndDelete(courseId);
     res.json({ message: "Course deleted successfully" });
   } catch (error) {
+    console.logt(error);
     res.sendStatus(500);
   }
 });
-
-
-
-
