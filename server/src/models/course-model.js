@@ -7,6 +7,8 @@ const courseSchema = new mongoose.Schema({
   published: Boolean,
   imageURL: String,
   owner: String,
+}, {
+  timestamps: true
 });
 
 const Course = mongoose.model("Course", courseSchema);

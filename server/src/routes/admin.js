@@ -100,8 +100,8 @@ adminRouter.delete(
 adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
-    const newCourse = await { ...req.body, owner: admin.id };
-    console.log(newCourse);
+    const reqBody = await req.body;
+    const newCourse = { ...reqBody, owner: admin.id };
     const course = new Course(newCourse);
     await course.save();
     res.json({ message: "Course created successfully" });
@@ -111,15 +111,13 @@ adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/courses", authenticateAdminJWT, async (req, res) => {
+adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
-    const email = admin.email;
-    const owner = await Admin.findOne({ email });
-    const ownerId = owner._id;
-    const courses = await Course.find({ owner: ownerId });
+    const courses = await Course.find({ owner: admin.id });
     res.json(courses);
   } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
