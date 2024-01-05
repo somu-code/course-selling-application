@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 
-export const generateAdminJWT = (email) => {
-  const payload = { email, role: "admin" };
-  return jwt.sign(payload, process.env.ADMIN_TOKEN_SECRET, {
+export const generateAdminJWT = (adminPayloadObject) => {
+  return jwt.sign(adminPayloadObject, process.env.ADMIN_TOKEN_SECRET, {
     expiresIn: process.env.TOKEN_EXPIRY,
   });
 };

@@ -9,38 +9,40 @@ import {
 
 export const adminRouter = Router();
 
+const saltRounds = 8;
+
 adminRouter.post("/signup", async (req, res) => {
   try {
     const { email, password } = await req.body;
-    const admin = await Admin.findOne({ email });
-    if (admin) {
+    const adminData = await Admin.findOne({ email });
+    if (adminData) {
       return res.status(403).json({ message: "Admin email already exists" });
-    } else {
-      const hashedPassword = await bcrypt.hash(password, 8);
-      const newAdmin = new Admin({ email, password: hashedPassword });
-      await newAdmin.save();
-      return res.json({
-        message: "Admin created successfully",
-      });
     }
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newAdmin = new Admin({ email, password: hashedPassword });
+    await newAdmin.save();
+    return res.json({
+      message: "Admin created successfully",
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error });
+    res.sendStatus(500);
   }
 });
 
 adminRouter.post("/signin", async (req, res) => {
   try {
     const { email, password } = await req.body;
-    const admin = await Admin.findOne({ email });
-    if (!admin) {
-      return res.status(404).json({ error: "Email not found" });
+    const adminData = await Admin.findOne({ email });
+    if (!adminData) {
+      return res.status(404).json({ message: "Email not found" });
     }
-    const isPasswordMath = await bcrypt.compare(password, admin.password);
+    const isPasswordMath = await bcrypt.compare(password, adminData.password);
     if (!isPasswordMath) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const adminToken = generateAdminJWT(email);
+    const adminPayload = { id: adminData.id, email: adminData.email, role: adminData.role }
+    const adminToken = generateAdminJWT(adminPayload);
     res.cookie("accessToken", adminToken, {
       domain: "localhost",
       path: "/",
