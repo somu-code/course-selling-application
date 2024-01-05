@@ -43,24 +43,27 @@ adminRouter.post("/signin", async (req, res) => {
     }
     const adminPayload = { id: adminData.id, email: adminData.email, role: adminData.role }
     const adminToken = generateAdminJWT(adminPayload);
-    res.cookie("accessToken", adminToken, {
-      domain: "localhost",
-      path: "/",
-      maxAge: 60 * 60 * 1000,
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
-    res.cookie("loggedIn", true, {
+    res.cookie("adminAccessToken", adminToken, {
       domain: "localhost",
       path: "/",
       maxAge: 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
     });
-    return res.json({ message: "Logged in successful", email });
+    return res.json({ message: "Signin in successful" });
   } catch (error) {
-    res.status(500).json({ error });
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+adminRouter.get("/profile", authenticateAdminJWT, async (req, res) => {
+  try {
+    const admin = req.admin;
+    res.json(admin);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
   }
 });
 
@@ -133,14 +136,6 @@ adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/profile", authenticateAdminJWT, async (req, res) => {
-  try {
-    const admin = req.admin;
-    res.json({ email: admin.email });
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
 
 adminRouter.get("/logout", authenticateAdminJWT, async (req, res) => {
   try {

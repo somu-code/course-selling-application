@@ -7,14 +7,13 @@ export const generateAdminJWT = (adminPayloadObject) => {
 };
 
 export const authenticateAdminJWT = async (req, res, next) => {
-  const token = req.cookies.accessToken;
+  const token = req.cookies.adminAccessToken;
   if (token) {
-    jwt.verify(token, process.env.ADMIN_TOKEN_SECRET, (error, admin) => {
+    jwt.verify(token, process.env.ADMIN_TOKEN_SECRET, (error, adminPayloadData) => {
       if (error) {
-        console.log("this code runs");
         res.sendStatus(403);
       } else {
-        req.admin = admin;
+        req.admin = adminPayloadData;
         next();
       }
     });
