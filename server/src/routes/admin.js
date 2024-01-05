@@ -77,6 +77,25 @@ adminRouter.post("/logout", authenticateAdminJWT, async (_req, res) => {
   }
 });
 
+adminRouter.delete(
+  "/delete",
+  authenticateAdminJWT,
+  async (req, res) => {
+    try {
+      const admin = req.admin;
+      // await Course.deleteMany({ owner: admin.id });
+      await Admin.findByIdAndDelete(admin.id);
+      res.clearCookie("adminAccessToken");
+      res.json({
+        message:
+          "Successfully deleted admin account along all the course his/her had.",
+      });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  },
+);
 adminRouter.post("/add-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
@@ -148,38 +167,4 @@ adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
 
 
 
-adminRouter.delete(
-  "/delete-account",
-  authenticateAdminJWT,
-  async (req, res) => {
-    try {
-      const admin = req.admin;
-      const email = admin.email;
-      const adminData = await Admin.findOne({ email });
-      const adminId = adminData._id.toString();
-      await Course.deleteMany({ owner: adminId });
-      await Admin.findByIdAndDelete(adminId);
-      res.cookie("accessToken", "", {
-        domain: "localhost",
-        path: "/",
-        secure: true,
-        sameSite: "strict",
-        httpOnly: true,
-        maxAge: 0,
-      });
-      res.cookie("loggedIn", "", {
-        domain: "localhost",
-        path: "/",
-        secure: true,
-        sameSite: "strict",
-        maxAge: 0,
-      });
-      res.json({
-        message:
-          "Successfully deleted admin account along all the course he/she created.",
-      });
-    } catch (error) {
-      res.sendStatus(500);
-    }
-  },
-);
+
