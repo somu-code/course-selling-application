@@ -67,6 +67,16 @@ adminRouter.get("/profile", authenticateAdminJWT, async (req, res) => {
   }
 });
 
+adminRouter.post("/logout", authenticateAdminJWT, async (_req, res) => {
+  try {
+    res.clearCookie("adminAccessToken");
+    res.json({ message: "Logout successfully" });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 adminRouter.post("/add-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
@@ -137,28 +147,6 @@ adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
 });
 
 
-adminRouter.get("/logout", authenticateAdminJWT, async (req, res) => {
-  try {
-    res.cookie("accessToken", "", {
-      domain: "localhost",
-      path: "/",
-      secure: true,
-      sameSite: "strict",
-      httpOnly: true,
-      maxAge: 0,
-    });
-    res.cookie("loggedIn", "", {
-      domain: "localhost",
-      path: "/",
-      secure: true,
-      sameSite: "strict",
-      maxAge: 0,
-    });
-    res.json({ message: "Logout successfully" });
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
 
 adminRouter.delete(
   "/delete-account",
