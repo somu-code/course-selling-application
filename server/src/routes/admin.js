@@ -1,11 +1,11 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
-import { Admin } from "../models/admin-model.mjs";
-import Course from "../models/course-model.mjs";
+import { Admin } from "../models/admin-model.js";
+import Course from "../models/course-model.js";
 import {
   generateAdminJWT,
   authenticateAdminJWT,
-} from "../jwt-auth/admin-auth.mjs";
+} from "../jwt-auth/admin-auth.js";
 
 export const adminRouter = Router();
 

@@ -3,10 +3,10 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { connectDB } from "./connectDB.mjs";
+import { connectDB } from "./connectDB.js";
 
-import { adminRouter } from "./routes/admin.mjs";
-import { userRouter } from "./routes/user.mjs";
+import { adminRouter } from "./routes/admin.js";
+import { userRouter } from "./routes/user.js";
 
 const app = express();
 app.use(express.json());
