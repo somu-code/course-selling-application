@@ -59,7 +59,7 @@ adminRouter.post("/signin", async (req, res) => {
 
 adminRouter.get("/profile", authenticateAdminJWT, async (req, res) => {
   try {
-    const admin = req.admin;
+    const admin = await req.admin;
     res.json(admin);
   } catch (error) {
     console.error(error);
@@ -82,7 +82,7 @@ adminRouter.delete(
   authenticateAdminJWT,
   async (req, res) => {
     try {
-      const admin = req.admin;
+      const admin = await req.admin;
       // await Course.deleteMany({ owner: admin.id });
       await Admin.findByIdAndDelete(admin.id);
       res.clearCookie("adminAccessToken");
@@ -96,17 +96,17 @@ adminRouter.delete(
     }
   },
 );
-adminRouter.post("/add-course", authenticateAdminJWT, async (req, res) => {
+
+adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
-    const email = admin.email;
-    const owner = await Admin.findOne({ email });
-    const ownerId = owner._id;
-    const newCourse = { ...req.body, owner: ownerId };
+    const newCourse = await { ...req.body, owner: admin.id };
+    console.log(newCourse);
     const course = new Course(newCourse);
     await course.save();
-    res.json({ message: "Course created successfully", courseID: course.id });
+    res.json({ message: "Course created successfully" });
   } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
