@@ -122,33 +122,35 @@ adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/course", authenticateAdminJWT, async (req, res) => {
-  try {
-    const courseId = req.query.courseId;
-    const course = await Course.findOne({ _id: courseId });
-    res.json(course);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
+// adminRouter.get("/course", authenticateAdminJWT, async (req, res) => {
+//   try {
+//     const courseId = req.query.courseId;
+//     const course = await Course.findOne({ _id: courseId });
+//     res.json(course);
+//   } catch (error) {
+//     res.sendStatus(500);
+//   }
+// });
 
 adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
   try {
-    const courseId = req.query.courseId;
-    const updatedCourse = req.body;
-    if (courseId === updatedCourse._id) {
-      const isUpdated = await Course.findByIdAndUpdate(
-        courseId,
-        updatedCourse,
-        { new: true },
-      );
-      if (isUpdated) {
-        return res.json({ message: "Course updated successfully" });
-      } else {
-        return res.json({ message: "Failed to update course" });
-      }
+    const admin = await req.admin;
+    const updatedCourse = await req.body;
+    const courseData = await Course.findOne(updatedCourse.id);
+    if (!courseData) {
+      return res.status(404).json({ message: "Requested course does not exixts" })
     }
+    if (admin.id !== updatedCourse.owner) {
+      return res.status(403).json({ message: "This course does not belong to this admin." });
+    }
+    await Course.findByIdAndUpdate(
+      updatedCourse._id,
+      updatedCourse,
+      { new: true },
+    );
+    return res.json({ message: "Course updated successfully" });
   } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
