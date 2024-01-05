@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { User } from "../models/user-model.mjs";
+import { User } from "../models/user-model.js";
 import bcrypt from "bcrypt";
-import { generateUserJWT } from "../jwt-auth/user-auth.mjs";
+import { generateUserJWT } from "../jwt-auth/user-auth.js";
 
 export const userRouter = Router();
 

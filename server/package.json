@@ -7,8 +7,8 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "format": "prettier --write \"**/*.{js,cjs,mjs,json,md}\"",
-    "start": "node ./src/index.mjs",
-    "dev": "nodemon ./src/index.mjs"
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
   },
   "keywords": [],
   "author": "",
