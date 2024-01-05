@@ -1,6 +1,4 @@
 import { Router } from "express";
-import dotenv from "dotenv";
-dotenv.config();
 import bcrypt from "bcrypt";
 import { Admin } from "../models/admin-model.mjs";
 import Course from "../models/course-model.mjs";
