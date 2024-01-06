@@ -146,7 +146,7 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
     if (!courseData) {
       return res.status(404).json({ message: "Requested course does not exixts" })
     }
-    if (admin.id !== updatedCourse.owner) {
+    if (!((admin.id === updatedCourse.owner) && (updatedCourse.owner === courseData.owner))) {
       return res.status(403).json({ message: "This course does not belong to this admin." });
     }
     await Course.findByIdAndUpdate(
@@ -163,11 +163,19 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
 
 adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
   try {
-    const courseId = req.query.courseId;
-    await Course.findByIdAndDelete(courseId);
-    res.json({ message: "Course deleted successfully" });
+    const { courseId } = req.body;
+    const admin = await req.admin;
+    const courseData = await Course.findById(courseId);
+    if (!courseData) {
+      return res.status(403).json({ message: "Course does not exixts" })
+    }
+    if (courseData.owner === admin.id) {
+      await Course.findByIdAndDelete(courseId);
+      return res.json({ message: "Course deleted successfully" });
+    }
+    return res.status(403).json({ message: "This course does not belong to this admin." })
   } catch (error) {
-    console.logt(error);
+    console.log(error);
     res.sendStatus(500);
   }
 });
