@@ -35,22 +35,21 @@ userRouter.post("/signin", async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    const userPayload = { id: userData.id, email: userData.email }
+    const userPayload = { id: userData.id, email: userData.email };
     const userToken = generateUserJWT(userPayload);
     res.cookie("userAccessToken", userToken, {
       domain: "localhost",
       path: "/",
       maxAge: 60 * 60 * 1000,
       secure: true,
-      sameSite: "strict"
-    })
+      sameSite: "strict",
+    });
     return res.json({ message: "Sign in successful" });
   } catch (error) {
-    console.error(error)
-    res.sendStatus(500)
-
+    console.error(error);
+    res.sendStatus(500);
   }
-})
+});
 
 userRouter.get("/", async (req, res) => {
   try {
