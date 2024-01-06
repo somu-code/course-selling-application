@@ -137,13 +137,12 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
     const updatedCourse = await req.body;
-    const isValid = mongoose.Types.ObjectId.isValid(updatedCourse._id);
-    console.log(isValid, "isValid");
-    if (!isValid) {
-      return res.status(400).json({ message: "Course _id is not valid" })
+    const isCourseIdValid = mongoose.Types.ObjectId.isValid(updatedCourse._id);
+    const isOwnerIdvalid = mongoose.Types.ObjectId.isValid(updatedCourse.owner);
+    if (!(isCourseIdValid && isOwnerIdvalid)) {
+      return res.status(400).json({ message: "Course _id or owner id is not valid" })
     }
-    const courseData = await Course.findOne(updatedCourse.id);
-    console.log(courseData, "courseData");
+    const courseData = await Course.findOne({ _id: updatedCourse._id });
     if (!courseData) {
       return res.status(404).json({ message: "Requested course does not exixts" })
     }
