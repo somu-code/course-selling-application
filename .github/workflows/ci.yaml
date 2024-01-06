@@ -27,7 +27,7 @@ jobs:
         run: npm run test
 
   format:
-    name: 'Run format'
+    name: 'Run check format'
     runs-on: ubuntu-latest
     steps:
 
@@ -38,4 +38,4 @@ jobs:
       run: npm install
 
     - name: 'Run Formatter'
-      run: npm run format
+      run: npm run prettier-check
