@@ -5,8 +5,8 @@ const adminSchema = new mongoose.Schema({
   password: String,
   role: {
     type: String,
-    default: "admin"
-  }
+    default: "admin",
+  },
 });
 
 export const Admin = mongoose.model("Admin", adminSchema);
