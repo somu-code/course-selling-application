@@ -137,22 +137,19 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
     const updatedCourse = await req.body;
-    const isValid = mongoose.Types.ObjectId.isValid(updatedCourse._id);
-    console.log(isValid, "isValid");
-    if (!isValid) {
-      return res.status(400).json({ message: "Course _id is not valid" });
+    const isCourseIdValid = mongoose.Types.ObjectId.isValid(updatedCourse._id);
+    const isOwnerIdvalid = mongoose.Types.ObjectId.isValid(updatedCourse.owner);
+    if (!(isCourseIdValid && isOwnerIdvalid)) {
+      return res.status(400).json({ message: "Course _id or owner id is not valid" })
     }
-    const courseData = await Course.findOne(updatedCourse.id);
-    console.log(courseData, "courseData");
+    const courseData = await Course.findOne({ _id: updatedCourse._id });
     if (!courseData) {
       return res
         .status(404)
         .json({ message: "Requested course does not exixts" });
     }
-    if (admin.id !== updatedCourse.owner) {
-      return res
-        .status(403)
-        .json({ message: "This course does not belong to this admin." });
+    if (!((admin.id === updatedCourse.owner) && (updatedCourse.owner === courseData.owner))) {
+      return res.status(403).json({ message: "This course does not belong to this admin." });
     }
     await Course.findByIdAndUpdate(updatedCourse._id, updatedCourse, {
       new: true,
@@ -166,11 +163,19 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
 
 adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
   try {
-    const courseId = req.query.courseId;
-    await Course.findByIdAndDelete(courseId);
-    res.json({ message: "Course deleted successfully" });
+    const { courseId } = req.body;
+    const admin = await req.admin;
+    const courseData = await Course.findById(courseId);
+    if (!courseData) {
+      return res.status(403).json({ message: "Course does not exixts" })
+    }
+    if (courseData.owner === admin.id) {
+      await Course.findByIdAndDelete(courseId);
+      return res.json({ message: "Course deleted successfully" });
+    }
+    return res.status(403).json({ message: "This course does not belong to this admin." })
   } catch (error) {
-    console.logt(error);
+    console.log(error);
     res.sendStatus(500);
   }
 });
