@@ -28,6 +28,10 @@ jobs:
         run: npm run test
   prettier:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+        shell: bash
 
     steps:
       - name: 'Checkout repository'
