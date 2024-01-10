@@ -9,15 +9,19 @@ export const generateUserJWT = (payload) => {
 export async function authenticateUserJWT(req, res, next) {
   const token = req.cookies.userAccessToken;
   if (token) {
-    jwt.verify(token, process.env.USER_TOKEN_SECRET, (error, userPayloadData) => {
-      if (error) {
-        return res.sendStatus(403);
-      } else {
-        req.user = userPayloadData;
-        next();
-        return;
-      }
-    })
+    jwt.verify(
+      token,
+      process.env.USER_TOKEN_SECRET,
+      (error, userPayloadData) => {
+        if (error) {
+          return res.sendStatus(403);
+        } else {
+          req.user = userPayloadData;
+          next();
+          return;
+        }
+      },
+    );
   } else {
     return res.sendStatus(403);
   }

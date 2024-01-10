@@ -62,29 +62,29 @@ userRouter.get("/profile", authenticateUserJWT, async (req, res) => {
     console.error(error);
     res.sendStatus(500);
   }
-})
+});
 
 userRouter.post("/logout", authenticateUserJWT, async (_req, res) => {
   try {
     res.clearCookie("userAccessToken");
-    res.json({ message: "Logged out successfully" })
+    res.json({ message: "Logged out successfully" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
-})
+});
 
 userRouter.delete("/delete-account", authenticateUserJWT, async (req, res) => {
   try {
     const user = req.user;
-    await User.findOneAndDelete({ _id: user._id })
+    await User.findOneAndDelete({ _id: user._id });
     res.clearCookie("userAccessToken");
-    res.json({ message: "User account deleted successfully" })
+    res.json({ message: "User account deleted successfully" });
   } catch (error) {
-    console.error(error)
-    res.sendStatus(500)
+    console.error(error);
+    res.sendStatus(500);
   }
-})
+});
 
 userRouter.get("/courses", authenticateUserJWT, async (_req, res) => {
   try {
