@@ -37,7 +37,7 @@ function UpdateCourse() {
             published,
             imageURL,
           }),
-        }
+        },
       );
       if (response.ok) {
         const jsonData = await response.json();

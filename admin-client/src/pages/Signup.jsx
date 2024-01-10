@@ -8,7 +8,7 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [visible, setVisible] = useState(false);
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {

@@ -18,7 +18,7 @@ function CourseDetails() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
         if (response.ok) {
           const jsonData = await response.json();
@@ -45,7 +45,7 @@ function CourseDetails() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (response.ok) {
         const jsonData = await response.json();

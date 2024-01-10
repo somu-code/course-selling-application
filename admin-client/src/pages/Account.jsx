@@ -12,7 +12,7 @@ function Account() {
   const setCourse = useSetRecoilState(courseState);
   const deleteAccount = async () => {
     const value = confirm(
-      "This action will permanently delete your account along with all the courses. Are you sure?"
+      "This action will permanently delete your account along with all the courses. Are you sure?",
     );
     if (!value) {
       return;
