@@ -30,9 +30,9 @@ userRouter.post("/signin", async (req, res) => {
     const { email, password } = await req.body;
     const userData = await User.findOne({ email });
     if (!userData) {
-      return res.status(404).json({ message: "Email not found" });
+      return res.status(404).json({ message: "User email not found" });
     }
-    const isPasswordMatch = bcrypt.compare(password, userData.password);
+    const isPasswordMatch = await bcrypt.compare(password, userData.password);
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
@@ -100,10 +100,10 @@ userRouter.post("/purchase-course", authenticateUserJWT, async (req, res) => {
     const user = req.user;
     const { courseId } = req.body;
     await User.findByIdAndUpdate(user._id, {
-      $push: { coursesBrought: courseId },
+      $addToSet: { coursesBrought: courseId },
     });
     await Course.findByIdAndUpdate(courseId, {
-      $push: { enrolledByStudents: user._id },
+      $addToSet: { enrolledByStudents: user._id },
     });
     res.json({ message: `User ${user._id} purchased Course ${courseId}` });
   } catch (error) {
