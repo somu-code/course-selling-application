@@ -99,8 +99,12 @@ userRouter.post("/purchase-course", authenticateUserJWT, async (req, res) => {
   try {
     const user = req.user;
     const { courseId } = req.body;
-    await User.findByIdAndUpdate(user._id, { $push: { coursesBrought: courseId } })
-    await Course.findByIdAndUpdate(courseId, { $push: { enrolledByStudents: user._id } })
+    await User.findByIdAndUpdate(user._id, {
+      $push: { coursesBrought: courseId },
+    });
+    await Course.findByIdAndUpdate(courseId, {
+      $push: { enrolledByStudents: user._id },
+    });
     res.json({ message: `User ${user._id} purchased Course ${courseId}` });
   } catch (error) {
     console.error(error);
