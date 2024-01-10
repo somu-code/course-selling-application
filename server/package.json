@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "format": "prettier --write \"**/*.{js,cjs,mjs,json,md}\"",
-    "prettier-check": "prettier --check **/*.{js,cjs,mjs,json,md}",
+    "prettify": "prettier --write \"**/*.{js,cjs,mjs,json,md}\"",
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js"
   },
