@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { User } from "../models/user-model.js";
 import bcrypt from "bcrypt";
-import { generateUserJWT } from "../jwt-auth/user-auth.js";
+import { authenticateUserJWT, generateUserJWT } from "../jwt-auth/user-auth.js";
+import Course from "../models/course-model.js";
 
 export const userRouter = Router();
 
@@ -29,13 +30,13 @@ userRouter.post("/signin", async (req, res) => {
     const { email, password } = await req.body;
     const userData = await User.findOne({ email });
     if (!userData) {
-      return res.status(404).json({ message: "Email not found" });
+      return res.status(404).json({ message: "User email not found" });
     }
-    const isPasswordMatch = bcrypt.compare(password, userData.password);
+    const isPasswordMatch = await bcrypt.compare(password, userData.password);
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    const userPayload = { id: userData.id, email: userData.email };
+    const userPayload = { _id: userData._id, email: userData.email };
     const userToken = generateUserJWT(userPayload);
     res.cookie("userAccessToken", userToken, {
       domain: "localhost",
@@ -51,12 +52,62 @@ userRouter.post("/signin", async (req, res) => {
   }
 });
 
-userRouter.get("/", async (req, res) => {
+userRouter.get("/profile", authenticateUserJWT, async (req, res) => {
   try {
-    const data = req.body;
-
-    res.json({ message: "CD working via github actions", data });
+    const user = req.user;
+    const userData = await User.find({ _id: user._id });
+    return res.json(userData);
   } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+userRouter.post("/logout", authenticateUserJWT, async (_req, res) => {
+  try {
+    res.clearCookie("userAccessToken");
+    res.json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+userRouter.delete("/delete-account", authenticateUserJWT, async (req, res) => {
+  try {
+    const user = req.user;
+    await User.findOneAndDelete({ _id: user._id });
+    res.clearCookie("userAccessToken");
+    res.json({ message: "User account deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+userRouter.get("/courses", authenticateUserJWT, async (_req, res) => {
+  try {
+    const courses = await Course.find({});
+    res.json(courses);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+userRouter.post("/purchase-course", authenticateUserJWT, async (req, res) => {
+  try {
+    const user = req.user;
+    const { courseId } = req.body;
+    await User.findByIdAndUpdate(user._id, {
+      $addToSet: { coursesBrought: courseId },
+    });
+    await Course.findByIdAndUpdate(courseId, {
+      $addToSet: { enrolledByStudents: user._id },
+    });
+    res.json({ message: `User ${user._id} purchased Course ${courseId}` });
+  } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
