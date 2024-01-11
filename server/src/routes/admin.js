@@ -40,10 +40,10 @@ adminRouter.post("/signin", async (req, res) => {
     }
     const isPasswordMath = await bcrypt.compare(password, adminData.password);
     if (!isPasswordMath) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid password" });
     }
     const adminPayload = {
-      id: adminData.id,
+      _id: adminData._id,
       email: adminData.email,
       role: adminData.role,
     };
@@ -86,7 +86,7 @@ adminRouter.delete("/delete", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
     // await Course.deleteMany({ owner: admin.id });
-    await Admin.findByIdAndDelete(admin.id);
+    await Admin.findByIdAndDelete(admin._id);
     res.clearCookie("adminAccessToken");
     res.json({
       message:
@@ -102,9 +102,14 @@ adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
     const reqBody = await req.body;
-    const newCourse = { ...reqBody, owner: admin.id };
-    const course = new Course(newCourse);
-    await course.save();
+    const createdCourse = await Course.create({
+      ...reqBody,
+      author: [admin._id],
+    });
+    await Admin.findByIdAndUpdate(
+      { _id: admin._id },
+      { $addToSet: { authored: createdCourse._id } },
+    );
     res.status(201).json({ message: "Course created successfully" });
   } catch (error) {
     console.error(error);
@@ -115,7 +120,7 @@ adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
 adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
-    const courses = await Course.find({ owner: admin.id });
+    const courses = await Course.find({ author: admin._id });
     res.json(courses);
   } catch (error) {
     console.error(error);
@@ -123,7 +128,7 @@ adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/all-courses", authenticateAdminJWT, async (_req, res) => {
+adminRouter.get("/courses", authenticateAdminJWT, async (_req, res) => {
   try {
     const courses = await Course.find();
     res.json(courses);
@@ -134,6 +139,7 @@ adminRouter.get("/all-courses", authenticateAdminJWT, async (_req, res) => {
 });
 
 adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
+  // This api is broken
   try {
     const admin = await req.admin;
     const updatedCourse = await req.body;
@@ -152,7 +158,7 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
     }
     if (
       !(
-        admin.id === updatedCourse.owner &&
+        admin._id === updatedCourse.owner &&
         updatedCourse.owner === courseData.owner
       )
     ) {
@@ -171,6 +177,7 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
 });
 
 adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
+  // This api is broken
   try {
     const { courseId } = req.body;
     const admin = await req.admin;
@@ -178,7 +185,7 @@ adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
     if (!courseData) {
       return res.status(403).json({ message: "Course does not exixts" });
     }
-    if (courseData.owner === admin.id) {
+    if (courseData.owner === admin._id) {
       await Course.findByIdAndDelete(courseId);
       return res.json({ message: "Course deleted successfully" });
     }

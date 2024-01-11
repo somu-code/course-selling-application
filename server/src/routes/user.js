@@ -111,3 +111,16 @@ userRouter.post("/purchase-course", authenticateUserJWT, async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+userRouter.get("/my-courses", authenticateUserJWT, async (req, res) => {
+  try {
+    const user = req.user;
+    const myCourses = await User.findById({ _id: user._id }).populate(
+      "coursesBrought",
+    );
+    res.json(myCourses);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});

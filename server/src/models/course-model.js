@@ -22,6 +22,12 @@ const courseSchema = new mongoose.Schema(
     imageURL: {
       type: String,
     },
+    author: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Admin",
+      },
+    ],
     enrolledByStudents: [
       {
         type: mongoose.Schema.Types.ObjectId,
