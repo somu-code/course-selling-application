@@ -139,6 +139,7 @@ adminRouter.get("/courses", authenticateAdminJWT, async (_req, res) => {
 });
 
 adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
+  // This api is broken
   try {
     const admin = await req.admin;
     const updatedCourse = await req.body;
@@ -176,6 +177,7 @@ adminRouter.put("/update-course", authenticateAdminJWT, async (req, res) => {
 });
 
 adminRouter.delete("/delete-course", authenticateAdminJWT, async (req, res) => {
+  // This api is broken
   try {
     const { courseId } = req.body;
     const admin = await req.admin;
