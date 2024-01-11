@@ -40,7 +40,7 @@ adminRouter.post("/signin", async (req, res) => {
     }
     const isPasswordMath = await bcrypt.compare(password, adminData.password);
     if (!isPasswordMath) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid password" });
     }
     const adminPayload = {
       _id: adminData._id,
@@ -120,7 +120,7 @@ adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
 adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
-    const courses = await Course.find({ owner: admin._id });
+    const courses = await Course.find({ author: admin._id });
     res.json(courses);
   } catch (error) {
     console.error(error);
@@ -128,7 +128,7 @@ adminRouter.get("/my-courses", authenticateAdminJWT, async (req, res) => {
   }
 });
 
-adminRouter.get("/all-courses", authenticateAdminJWT, async (_req, res) => {
+adminRouter.get("/courses", authenticateAdminJWT, async (_req, res) => {
   try {
     const courses = await Course.find();
     res.json(courses);
