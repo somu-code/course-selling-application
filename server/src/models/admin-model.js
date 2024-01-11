@@ -17,6 +17,12 @@ const adminSchema = new mongoose.Schema({
     type: String,
     default: "admin",
   },
+  authored: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+    },
+  ],
 });
 
 export const Admin = mongoose.model("Admin", adminSchema);
