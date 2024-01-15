@@ -3,6 +3,7 @@ import { serverApi } from "../ServerApi";
 import { useSetRecoilState } from "recoil";
 import { adminState } from "../store/atoms/admin";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { document } from "postcss";
 
 function Signin() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Signin() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${serverApi}/admin/signin`, {
+      const response = await fetch(`${serverApi}/signin`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -23,6 +24,10 @@ function Signin() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        const cookieFromDocument = document.cookie;
+        const adminAccessToken = cookieFromDocument.split("=");
+        const adminJWT = adminAccessToken[1];
+        const [header, payload, signature] = adminJWT.split(".");
         const jsonData = await response.json();
         const responseEmail = jsonData.email;
         setAdmin({
