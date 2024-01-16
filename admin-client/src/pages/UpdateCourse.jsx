@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { courseState } from "../store/atoms/courses";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 
 function UpdateCourse() {
   const courses = useRecoilValue(courseState);
@@ -22,7 +22,7 @@ function UpdateCourse() {
     event.preventDefault();
     try {
       const response = await fetch(
-        `${serverApi}/admin/update-course?courseId=${id}`,
+        `${adminApi}/update-course?courseId=${id}`,
         {
           method: "PUT",
           credentials: "include",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 import { useSetRecoilState } from "recoil";
 import { adminState } from "../store/atoms/admin";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -15,7 +15,7 @@ function Signin() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${serverApi}/signin`, {
+      const response = await fetch(`${adminApi}/signin`, {
         method: "POST",
         credentials: "include",
         headers: {

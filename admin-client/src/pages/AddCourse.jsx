@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 import { useNavigate } from "react-router-dom";
 
 function AddCourse() {
@@ -13,7 +13,7 @@ function AddCourse() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${serverApi}/admin/add-course`, {
+      const response = await fetch(`${adminApi}/add-course`, {
         method: "POST",
         credentials: "include",
         headers: {

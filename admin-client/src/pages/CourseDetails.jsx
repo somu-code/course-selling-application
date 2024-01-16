@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 import { Link, useNavigate } from "react-router-dom";
 
 function CourseDetails() {
@@ -11,7 +11,7 @@ function CourseDetails() {
     const fetchCourse = async () => {
       try {
         const response = await fetch(
-          `${serverApi}/admin/course?courseId=${id}`,
+          `${adminApi}/course?courseId=${id}`,
           {
             method: "GET",
             credentials: "include",
