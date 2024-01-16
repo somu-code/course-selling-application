@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import React, { useState } from "react";
 import { userApi } from "../ServerApi";
+import { base64UrlDecoded } from "../util/DecodedUrl";
 
 export function Signin() {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ export function Signin() {
         const adminAccessToken = cookieFromDocument.split("=");
         const adminJWT = adminAccessToken[1];
         const [header, payload, signature] = adminJWT.split(".");
-        console.log(payload);
+        const decodedPayloadData = JSON.parse(base64UrlDecoded(payload));
+        console.log(decodedPayloadData);
         navigate("/");
       }
       if (response.status === 401 || response.status === 404) {
