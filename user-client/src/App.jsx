@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import { Signup } from "./pages/Signup";
@@ -8,7 +8,6 @@ import { CourseDetails } from "./pages/CourseDetails";
 import { PageNotFound } from "./pages/PageNotFound";
 
 export default function App() {
-  const navigate = useNavigate();
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
