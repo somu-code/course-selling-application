@@ -1,4 +1,4 @@
-import { Routes, Route, json } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import { Signup } from "./pages/Signup";
@@ -9,21 +9,26 @@ import { PageNotFound } from "./pages/PageNotFound";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
 import { userApi } from "./UserApi";
+import { Account } from "./pages/Account";
 
 export default function App() {
   const { setUser } = useContext(UserContext);
   useEffect(() => {
     const initAdmin = async () => {
-      const response = await fetch(`${userApi}/profile`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const jsonData = await response.json();
-        setUser(jsonData);
+      try {
+        const response = await fetch(`${userApi}/profile`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const jsonData = await response.json();
+          setUser(jsonData);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
     initAdmin();
@@ -33,6 +38,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="account" element={<Account />} />
         <Route path="signup" element={<Signup />} />
         <Route path="signin" element={<Signin />} />
         <Route path="courses">
