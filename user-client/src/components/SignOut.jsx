@@ -1,15 +1,24 @@
+import { useNavigate } from "react-router-dom";
 import { userApi } from "../UserApi";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 export function SignOut() {
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
   const signOut = async () => {
     try {
-      await fetch(`${userApi}/signoff`, {
+      const response = await fetch(`${userApi}/signoff`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json"
         }
       })
+      if (response.ok) {
+        navigate("signin");
+        setUser(null)
+      }
     } catch (error) {
       console.error(error);
     }
