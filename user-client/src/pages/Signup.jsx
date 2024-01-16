@@ -25,7 +25,7 @@ export function Signup() {
         body: JSON.stringify({ email, password })
       })
       if (response.ok) {
-        navigate("signin")
+        navigate("/signin")
       }
     } catch (error) {
       console.error(error);
