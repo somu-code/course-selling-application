@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userApi } from "../ServerApi";
+import { userApi } from "../UserApi";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -20,22 +20,21 @@ export function Signup() {
       const response = await fetch(`${userApi}/signup`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
-      })
+        body: JSON.stringify({ email, password }),
+      });
       if (response.ok) {
-        navigate("/signin")
+        navigate("/signin");
       }
     } catch (error) {
       console.error(error);
-
     }
-    setEmail("")
-    setPassword("")
-    setConfirmPassword("")
-    setVisible(false)
-  }
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setVisible(false);
+  };
 
   return (
     <div className="min-h-[90vh] flex flex-row justify-center items-center">
@@ -91,5 +90,5 @@ export function Signup() {
         </form>
       </div>
     </div>
-  )
+  );
 }

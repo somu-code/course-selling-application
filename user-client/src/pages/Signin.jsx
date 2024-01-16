@@ -1,13 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
-import React, { useState } from "react";
-import { userApi } from "../ServerApi";
-import { base64UrlDecoded } from "../util/DecodedUrl";
+import React, { useContext, useState } from "react";
+import { userApi } from "../UserApi";
+import { UserContext } from "../context/UserContext";
 
 export function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
+  const { setUser } = useContext(UserContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,12 +22,8 @@ export function Signin() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        const cookieFromDocument = document.cookie;
-        const adminAccessToken = cookieFromDocument.split("=");
-        const adminJWT = adminAccessToken[1];
-        const [header, payload, signature] = adminJWT.split(".");
-        const decodedPayloadData = JSON.parse(base64UrlDecoded(payload));
-        console.log(decodedPayloadData);
+        const jsonData = await response.json();
+        setUser(jsonData.userData);
         navigate("/");
       }
       if (response.status === 401 || response.status === 404) {

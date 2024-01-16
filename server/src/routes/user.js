@@ -45,7 +45,14 @@ userRouter.post("/signin", async (req, res) => {
       secure: true,
       sameSite: "strict",
     });
-    return res.json({ message: "Sign in successful" });
+    return res.json({
+      message: "Sign in successful",
+      userData: {
+        _id: userData._id,
+        name: userData.name,
+        email: userData.email,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -55,7 +62,7 @@ userRouter.post("/signin", async (req, res) => {
 userRouter.get("/profile", authenticateUserJWT, async (req, res) => {
   try {
     const user = req.user;
-    const userData = await User.find({ _id: user._id });
+    const userData = await User.findById({ _id: user._id });
     return res.json(userData);
   } catch (error) {
     console.error(error);
@@ -63,10 +70,10 @@ userRouter.get("/profile", authenticateUserJWT, async (req, res) => {
   }
 });
 
-userRouter.post("/logout", authenticateUserJWT, async (_req, res) => {
+userRouter.post("/signoff", authenticateUserJWT, async (_req, res) => {
   try {
     res.clearCookie("userAccessToken");
-    res.json({ message: "Logged out successfully" });
+    res.json({ message: "Sign Off successfully" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);

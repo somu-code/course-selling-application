@@ -1,5 +1,26 @@
-import React from "react";
+import { useEffect } from "react";
+import { userApi } from "../UserApi";
 
 export function Courses() {
-  return <div>Courses</div>;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${userApi}/courses`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const jsonData = await response.json();
+          console.log(jsonData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+  return <h1>Courses</h1>;
 }
