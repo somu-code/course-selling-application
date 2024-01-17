@@ -1,14 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { userApi } from "../UserApi";
-import { UserContext } from "../context/UserContext";
+import { useAuth } from "../hooks/useAuth";
 
 export function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
-  const { setUser } = useContext(UserContext);
+  const { setUser } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
