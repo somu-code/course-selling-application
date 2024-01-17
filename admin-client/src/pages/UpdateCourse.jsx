@@ -21,24 +21,21 @@ function UpdateCourse() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(
-        `${adminApi}/update-course?courseId=${id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            _id: course._id,
-            title,
-            description,
-            price,
-            published,
-            imageURL,
-          }),
+      const response = await fetch(`${adminApi}/update-course?courseId=${id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          _id: course._id,
+          title,
+          description,
+          price,
+          published,
+          imageURL,
+        }),
+      });
       if (response.ok) {
         const jsonData = await response.json();
         navigate(`/admin/course/${id}`);

@@ -39,7 +39,6 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-
         {/* public routes */}
         <Route index element={<Home />} />
         <Route path="signup" element={<Signup />} />

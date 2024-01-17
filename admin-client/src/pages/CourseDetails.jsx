@@ -10,16 +10,13 @@ function CourseDetails() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await fetch(
-          `${adminApi}/course?courseId=${id}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const response = await fetch(`${adminApi}/course?courseId=${id}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+        });
         if (response.ok) {
           const jsonData = await response.json();
           setCourse(jsonData);

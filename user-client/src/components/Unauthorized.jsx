@@ -1,5 +1,3 @@
 export function Unauthorized() {
-  return (
-    <div>Unauthorized</div>
-  )
+  return <div>Unauthorized</div>;
 }
