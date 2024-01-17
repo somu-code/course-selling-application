@@ -1,5 +1,5 @@
 import React from "react";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { adminState } from "../store/atoms/admin";
@@ -13,8 +13,8 @@ function LogOut() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`${serverApi}/admin/logout`, {
-        method: "GET",
+      const response = await fetch(`${adminApi}/logout`, {
+        method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",

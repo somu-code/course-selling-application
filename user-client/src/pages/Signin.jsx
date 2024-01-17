@@ -1,37 +1,41 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { adminApi } from "../AdminApi";
+import { useNavigate, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { userApi } from "../UserApi";
+import { useAuth } from "../hooks/useAuth";
 
-function Signup() {
+export function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [visible, setVisible] = useState(false);
+  const { setUser } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      setVisible(true);
-      return;
-    }
-    setVisible(false);
     try {
-      await fetch(`${adminApi}/signup`, {
+      const response = await fetch(`${userApi}/signin`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
+      if (response.ok) {
+        const jsonData = await response.json();
+        setUser(jsonData.userData);
+        navigate("/");
+      }
+      if (response.status === 401 || response.status === 404) {
+        setVisible(true);
+      }
     } catch (error) {
       console.error(error);
     }
     setEmail("");
     setPassword("");
-    setConfirmPassword("");
-    navigate("/admin/signin");
   };
+
   return (
     <div className="min-h-[90vh] flex flex-row justify-center items-center">
       <div className="w-[430px] bg-slate-300 rounded-xl">
@@ -40,7 +44,7 @@ function Signup() {
           className="mx-auto py-8 flex flex-col gap-5 w-[330px]"
         >
           <h3 className="text-center font-bold text-[#1E0E62] text-4xl mb-6">
-            Sign Up Now
+            Sign In
           </h3>
           <input
             type="email"
@@ -62,31 +66,24 @@ function Signup() {
             onChange={(event) => setPassword(event.target.value)}
             value={password}
           />
-          <input
-            type="password"
-            name="confirm-password"
-            id="confirm-password"
-            placeholder="Confirm Password"
-            required
-            className="pl-2 py-2 rounded-md focus:outline-blue-500"
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            value={confirmPassword}
-          />
           {visible ? (
-            <p className="text-center font-medium text-red-500">
-              Password do not match!
+            <p className="text-center text-red-500 font-medium">
+              Invalid email or password
             </p>
           ) : null}
           <button
             type="submit"
             className="bg-[#2866df] text-white font-semibold py-2 rounded-md hover:bg-[#215ac8]"
           >
-            Sign Up
+            Sign In
           </button>
         </form>
+        <div className="flex flex-row justify-center pb-5">
+          <Link to="signup">
+            <p className="font-medium">Don't have an account?</p>
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
-
-export default Signup;

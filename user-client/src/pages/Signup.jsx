@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminApi } from "../AdminApi";
+import { userApi } from "../UserApi";
 
-function Signup() {
+export function Signup() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,21 +17,25 @@ function Signup() {
     }
     setVisible(false);
     try {
-      await fetch(`${adminApi}/signup`, {
+      const response = await fetch(`${userApi}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
+      if (response.ok) {
+        navigate("/signin");
+      }
     } catch (error) {
       console.error(error);
     }
     setEmail("");
     setPassword("");
     setConfirmPassword("");
-    navigate("/admin/signin");
+    setVisible(false);
   };
+
   return (
     <div className="min-h-[90vh] flex flex-row justify-center items-center">
       <div className="w-[430px] bg-slate-300 rounded-xl">
@@ -88,5 +92,3 @@ function Signup() {
     </div>
   );
 }
-
-export default Signup;

@@ -1,6 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { adminEmailState } from "../store/selectors/adminEmail";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 import { adminState } from "../store/atoms/admin";
 import { courseState } from "../store/atoms/courses";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ function Account() {
       return;
     }
     try {
-      const response = await fetch(`${serverApi}/admin/delete-account`, {
+      const response = await fetch(`${adminApi}/delete-account`, {
         method: "DELETE",
         credentials: "include",
         headers: {

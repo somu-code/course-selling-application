@@ -1,4 +1,4 @@
-import { serverApi } from "./ServerApi";
+import { adminApi } from "./AdminApi";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Signin from "./pages/Signin";
@@ -22,7 +22,7 @@ function App() {
   useEffect(() => {
     const initAdmin = async () => {
       try {
-        const response = await fetch(`${serverApi}/admin/profile`, {
+        const response = await fetch(`${adminApi}/profile`, {
           method: "GET",
           credentials: "include",
           headers: {

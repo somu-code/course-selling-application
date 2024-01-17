@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { serverApi } from "../ServerApi";
+import { adminApi } from "../AdminApi";
 import { Link } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { courseState } from "../store/atoms/courses";
@@ -11,7 +11,7 @@ function Courses() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${serverApi}/admin/courses`, {
+        const response = await fetch(`${adminApi}/courses`, {
           method: "GET",
           credentials: "include",
           headers: {

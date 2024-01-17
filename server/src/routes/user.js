@@ -16,8 +16,7 @@ userRouter.post("/signup", async (req, res) => {
       return res.status(403).json({ message: "User email already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new User({ email, password: hashedPassword });
-    await newUser.save();
+    await User.create({ email, password: hashedPassword });
     return res.json({ message: "User created successfully" });
   } catch (error) {
     console.error(error);
@@ -36,7 +35,11 @@ userRouter.post("/signin", async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    const userPayload = { _id: userData._id, email: userData.email };
+    const userPayload = {
+      _id: userData._id,
+      name: userData.name,
+      role: userData.role,
+    };
     const userToken = generateUserJWT(userPayload);
     res.cookie("userAccessToken", userToken, {
       domain: "localhost",
@@ -44,8 +47,18 @@ userRouter.post("/signin", async (req, res) => {
       maxAge: 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
+      httpOnly: true,
     });
-    return res.json({ message: "Sign in successful" });
+    return res.json({
+      message: "Sign in successful",
+      userData: {
+        _id: userData._id,
+        name: userData.name,
+        email: userData.email,
+        role: userData.role,
+        coursesBrought: userData.coursesBrought,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -55,18 +68,24 @@ userRouter.post("/signin", async (req, res) => {
 userRouter.get("/profile", authenticateUserJWT, async (req, res) => {
   try {
     const user = req.user;
-    const userData = await User.find({ _id: user._id });
-    return res.json(userData);
+    const userData = await User.findById({ _id: user._id });
+    return res.json({
+      _id: userData._id,
+      name: userData.name,
+      email: userData.email,
+      role: userData.role,
+      coursesBrought: userData.coursesBrought,
+    });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 });
 
-userRouter.post("/logout", authenticateUserJWT, async (_req, res) => {
+userRouter.post("/signoff", authenticateUserJWT, async (_req, res) => {
   try {
     res.clearCookie("userAccessToken");
-    res.json({ message: "Logged out successfully" });
+    res.json({ message: "Sign Off successfully" });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
