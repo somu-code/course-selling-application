@@ -10,6 +10,7 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
 import { userApi } from "./UserApi";
 import { Account } from "./pages/Account";
+import { Unauthorized } from "./components/Unauthorized";
 
 export default function App() {
   const { setUser } = useContext(UserContext);
@@ -37,14 +38,21 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+
+        {/* public routes */}
         <Route index element={<Home />} />
-        <Route path="account" element={<Account />} />
         <Route path="signup" element={<Signup />} />
         <Route path="signin" element={<Signin />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
+
+        {/* protected routes */}
+        <Route path="account" element={<Account />} />
         <Route path="courses">
           <Route index element={<Courses />} />
           <Route path=":id" element={<CourseDetails />} />
         </Route>
+
+        {/* catch all */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
