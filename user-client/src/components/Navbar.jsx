@@ -23,7 +23,7 @@ export function Navbar() {
         </div>
         <div className="nav-right flex flex-row justify-end">
           {user ? (
-            <ul className="flex flex-row gap-2 font-medium text-lg itmes-center">
+            <ul className="flex flex-row gap-2 font-medium text-lg items-center">
               <li>
                 <Link to={"account"}>Account</Link>
               </li>
