@@ -50,7 +50,7 @@ adminRouter.post("/signin", async (req, res) => {
     const adminToken = generateAdminJWT(adminPayload);
     res.cookie("adminAccessToken", adminToken, {
       domain: "localhost",
-      path: "/",
+      path: "/*",
       maxAge: 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
