@@ -50,24 +50,22 @@ adminRouter.post("/signin", async (req, res) => {
     const adminToken = generateAdminJWT(adminPayload);
     res.cookie("adminAccessToken", adminToken, {
       domain: "localhost",
-      path: "/*",
+      path: "/",
       maxAge: 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
       httpOnly: true,
     });
-    return res
-      .status(200)
-      .json({
-        message: "Signin in successful",
-        adminData: {
-          _id: adminData._id,
-          name: adminData.name,
-          email: adminData.email,
-          role: adminData.role,
-          authoredCourses: adminData.authored,
-        },
-      });
+    return res.json({
+      message: "Signin in successful",
+      adminData: {
+        _id: adminData._id,
+        name: adminData.name,
+        email: adminData.email,
+        role: adminData.role,
+        authoredCourses: adminData.authored,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
