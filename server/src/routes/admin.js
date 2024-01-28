@@ -54,8 +54,20 @@ adminRouter.post("/signin", async (req, res) => {
       maxAge: 60 * 60 * 1000,
       secure: true,
       sameSite: "strict",
+      httpOnly: true,
     });
-    return res.status(201).json({ message: "Signin in successful" });
+    return res
+      .status(200)
+      .json({
+        message: "Signin in successful",
+        adminData: {
+          _id: adminData._id,
+          name: adminData.name,
+          email: adminData.email,
+          role: adminData.role,
+          authoredCourses: adminData.authored,
+        },
+      });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -65,7 +77,16 @@ adminRouter.post("/signin", async (req, res) => {
 adminRouter.get("/profile", authenticateAdminJWT, async (req, res) => {
   try {
     const admin = await req.admin;
-    res.json(admin);
+    const adminData = await Admin.findById(admin._id);
+    res.json({
+      adminDaa: {
+        _id: adminData._id,
+        name: adminData.name,
+        email: adminData.email,
+        role: adminData.role,
+        authoredCourses: adminData.authored,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);

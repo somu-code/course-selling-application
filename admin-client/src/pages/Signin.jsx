@@ -23,17 +23,8 @@ function Signin() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        const cookieFromDocument = document.cookie;
-        const adminAccessToken = cookieFromDocument.split("=");
-        const adminJWT = adminAccessToken[1];
-        const [header, payload, signature] = adminJWT.split(".");
         const jsonData = await response.json();
-        const responseEmail = jsonData.email;
-        setAdmin({
-          adminEmail: responseEmail,
-          isAuthenticated: true,
-        });
-        navigate("/");
+        console.log(jsonData);
       }
       if (response.status === 401 || response.status === 404) {
         setVisible(true);

@@ -1,6 +1,5 @@
 import { adminApi } from "./AdminApi";
 import { useEffect } from "react";
-import Navbar from "./components/Navbar";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
@@ -53,22 +52,21 @@ function App() {
 
   return (
     <main>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public routes */}
           <Route path="/" element={<Home />} />
-          <Route path="admin/signup" element={<Signup />} />
-          <Route path="admin/signin" element={<Signin />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="signin" element={<Signin />} />
           <Route path="unauthorized" element={<Unauthorized />} />
 
           {/* protected routes */}
           <Route element={<RequireAuth />}>
-            <Route path="admin/add-course" element={<AddCourse />} />
-            <Route path="admin/courses" element={<Courses />} />
-            <Route path="admin/course/:id" element={<CourseDetails />} />
-            <Route path="admin/update-course/:id" element={<UpdateCourse />} />
-            <Route path="admin/account" element={<Account />} />
+            <Route path="add-course" element={<AddCourse />} />
+            <Route path="courses" element={<Courses />} />
+            <Route path="course/:id" element={<CourseDetails />} />
+            <Route path="update-course/:id" element={<UpdateCourse />} />
+            <Route path="account" element={<Account />} />
           </Route>
 
           {/* catch all */}
