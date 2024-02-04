@@ -17,14 +17,14 @@ function LogOut() {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
         const jsonData = await response.json();
         setAdmin({
           adminEmail: null,
-          isAuthenticated: false
+          isAuthenticated: false,
         });
         setCourse([]);
         navigate("/");

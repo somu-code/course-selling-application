@@ -22,14 +22,14 @@ function Account() {
         method: "DELETE",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
       if (response.ok) {
         const jsonData = response.json();
         setAdmin({
           adminEmail: null,
-          isAuthenticated: false
+          isAuthenticated: false,
         });
         setCourse([]);
         navigate("/");
