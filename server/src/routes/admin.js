@@ -108,7 +108,7 @@ adminRouter.post("/create-course", authenticateAdminJWT, async (req, res) => {
     });
     await Admin.findByIdAndUpdate(
       { _id: admin._id },
-      { $addToSet: { authored: createdCourse._id } },
+      { $addToSet: { authored: createdCourse._id } }
     );
     res.status(201).json({ message: "Course created successfully" });
   } catch (error) {

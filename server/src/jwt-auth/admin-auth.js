@@ -19,7 +19,7 @@ export const authenticateAdminJWT = async (req, res, next) => {
           req.admin = adminPayloadData;
           next();
         }
-      },
+      }
     );
   } else {
     res.sendStatus(403);

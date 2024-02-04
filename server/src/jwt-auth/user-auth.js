@@ -20,7 +20,7 @@ export async function authenticateUserJWT(req, res, next) {
           next();
           return;
         }
-      },
+      }
     );
   } else {
     return res.sendStatus(403);

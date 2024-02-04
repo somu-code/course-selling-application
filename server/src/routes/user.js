@@ -135,7 +135,7 @@ userRouter.get("/my-courses", authenticateUserJWT, async (req, res) => {
   try {
     const user = req.user;
     const myCourses = await User.findById({ _id: user._id }).populate(
-      "coursesBrought",
+      "coursesBrought"
     );
     res.json(myCourses);
   } catch (error) {
