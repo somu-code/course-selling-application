@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "prettify": "prettier --write **/*.{js,jsx,md,html,css}"
+    "prettify": "prettier --write \"**/*.{html,css,js,jsx,cjs,mjs,json,md}\""
   },
   "dependencies": {
     "react": "^18.2.0",
