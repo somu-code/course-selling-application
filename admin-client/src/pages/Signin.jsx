@@ -18,9 +18,9 @@ function Signin() {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password })
       });
       if (response.ok) {
         const cookieFromDocument = document.cookie;
@@ -31,7 +31,7 @@ function Signin() {
         const responseEmail = jsonData.email;
         setAdmin({
           adminEmail: responseEmail,
-          isAuthenticated: true,
+          isAuthenticated: true
         });
         navigate("/");
       }

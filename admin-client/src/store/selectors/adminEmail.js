@@ -6,5 +6,5 @@ export const adminEmailState = selector({
   get: ({ get }) => {
     const admin = get(adminState);
     return admin.adminEmail;
-  },
+  }
 });

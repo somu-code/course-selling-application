@@ -17,15 +17,15 @@ function AddCourse() {
         method: "POST",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           title,
           description,
           price,
           published,
-          imageURL,
-        }),
+          imageURL
+        })
       });
       if (response.ok) {
         setTitle("");

@@ -26,25 +26,25 @@ function App() {
           method: "GET",
           credentials: "include",
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         });
         if (response.ok) {
           const jsonData = await response.json();
           const responseEmail = jsonData.email;
           setAdmin({
             adminEmail: responseEmail,
-            isAuthenticated: true,
+            isAuthenticated: true
           });
         } else {
           setAdmin({
-            adminEmail: null,
+            adminEmail: null
           });
         }
       } catch (error) {
         console.error(error);
         setAdmin({
-          adminEmail: null,
+          adminEmail: null
         });
       }
     };

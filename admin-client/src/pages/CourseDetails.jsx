@@ -14,8 +14,8 @@ function CourseDetails() {
           method: "GET",
           credentials: "include",
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         });
         if (response.ok) {
           const jsonData = await response.json();
@@ -40,9 +40,9 @@ function CourseDetails() {
           method: "DELETE",
           credentials: "include",
           headers: {
-            "Content-Type": "application/json",
-          },
-        },
+            "Content-Type": "application/json"
+          }
+        }
       );
       if (response.ok) {
         const jsonData = await response.json();

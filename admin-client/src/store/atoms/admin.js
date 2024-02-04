@@ -4,6 +4,6 @@ export const adminState = atom({
   key: "adminState",
   default: {
     adminEmail: null,
-    isAuthenticated: false,
-  },
+    isAuthenticated: false
+  }
 });

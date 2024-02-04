@@ -12,7 +12,7 @@ function Account() {
   const setCourse = useSetRecoilState(courseState);
   const deleteAccount = async () => {
     const value = confirm(
-      "This action will permanently delete your account along with all the courses. Are you sure?",
+      "This action will permanently delete your account along with all the courses. Are you sure?"
     );
     if (!value) {
       return;
@@ -22,14 +22,14 @@ function Account() {
         method: "DELETE",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       });
       if (response.ok) {
         const jsonData = response.json();
         setAdmin({
           adminEmail: null,
-          isAuthenticated: false,
+          isAuthenticated: false
         });
         setCourse([]);
         navigate("/");

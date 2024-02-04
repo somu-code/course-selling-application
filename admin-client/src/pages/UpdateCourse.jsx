@@ -25,7 +25,7 @@ function UpdateCourse() {
         method: "PUT",
         credentials: "include",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           _id: course._id,
@@ -33,8 +33,8 @@ function UpdateCourse() {
           description,
           price,
           published,
-          imageURL,
-        }),
+          imageURL
+        })
       });
       if (response.ok) {
         const jsonData = await response.json();

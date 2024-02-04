@@ -6,5 +6,5 @@ export const adminAuthenticatedState = selector({
   get: ({ get }) => {
     const admin = get(adminState);
     return admin.isAuthenticated;
-  },
+  }
 });
