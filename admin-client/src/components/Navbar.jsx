@@ -17,26 +17,26 @@ function Navbar() {
           <Link to="/">
             <div className="">Home</div>
           </Link>
-          <Link to="/admin/courses">
+          <Link to="courses">
             <div className="">Courses</div>
           </Link>
-          <Link to="/admin/add-course">
+          <Link to="add-course">
             <div className="">Add-Course</div>
           </Link>
         </div>
         {auth ? (
           <div className="flex flex-row items-center justify-end gap-2">
-            <Link to="/admin/account">
+            <Link to="account">
               <h2 className="text-lg">Accounts</h2>
             </Link>
             <LogOut />
           </div>
         ) : (
           <div className="flex flex-row items-center justify-end gap-2">
-            <Link to="/admin/signup">
+            <Link to="signup">
               <button className="text-[#151439] text-lg">Sign Up</button>
             </Link>
-            <Link to="/admin/signin">
+            <Link to="signin">
               <div className="bg-[#25DAC5] px-3 py-1 rounded-full">
                 <button className="text-[#FFFFFF] text-lg font-semibold text-center">
                   Sign In
