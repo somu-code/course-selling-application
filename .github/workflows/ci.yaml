@@ -8,6 +8,10 @@ on:
 
 jobs:
   prettier:
+    name: "Run prettier"
+    defaults:
+      run:
+        shell: bash
     runs-on: ubuntu-latest
 
     steps:
