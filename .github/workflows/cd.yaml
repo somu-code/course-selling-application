@@ -19,4 +19,4 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          echo ${{secrets.EC2_SSH_KEY}}
+          echo "The secret is ${{secrets.EC2_SSH_KEY}}"
