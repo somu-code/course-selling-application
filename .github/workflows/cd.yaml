@@ -19,6 +19,4 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          echo ${{EC2_SSH_KEY}} > keyfile
-          chmod 600 keyfile
-          ssh -t -i kyefile ubuntu@"$HOST_IP" "echo 'Hello, world! > hello'"
+          echo ${{EC2_SSH_KEY}}
