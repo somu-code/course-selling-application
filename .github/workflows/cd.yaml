@@ -19,4 +19,6 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          echo "The secret is ${{secrets.EC2_SSH_KEY}}"
+          echo ${{secrets.EC2_SSH_KEY}} > keyfile
+          chmod 600 keyfile
+          ssh -t -i kyefile ubuntu@"$HOST_IP" "echo 'Hello, world! > hello'"
